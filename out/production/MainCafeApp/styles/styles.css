@@ -1,0 +1,37 @@
+/* General Dark Mode */
+.dark-mode {
+    -fx-background-color: #2b2b2b;
+    -fx-text-fill: white;
+}
+
+.button {
+    -fx-background-color: #444;
+    -fx-text-fill: white;
+    -fx-padding: 10px;
+    -fx-font-size: 14px;
+}
+
+.label {
+    -fx-text-fill: black;
+}
+
+/* Styled List Views */
+.styled-list {
+    -fx-background-color: transparent;
+    -fx-text-fill: black;
+}
+
+.dark-mode .styled-list {
+    -fx-background-color: #2b2b2b;
+    -fx-text-fill: white;
+}
+
+/* Dark Mode for Buttons and Labels */
+.dark-mode .button {
+    -fx-background-color: #555;
+    -fx-text-fill: white;
+}
+
+.dark-mode .label {
+    -fx-text-fill: white;
+}
