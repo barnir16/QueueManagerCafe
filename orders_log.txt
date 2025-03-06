@@ -1,0 +1,4 @@
+--- Non-Processed Orders ---
+
+--- Processed Orders ---
+Order ID: 1 | Items: {Cappuccino=1} | Member: No | Time Placed: 2025-01-23 12:37:12 | Time Processed: 2025-01-23 12:37:25
