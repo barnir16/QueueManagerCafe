@@ -1,3 +1,1 @@
-findUser,password123
-dupUser,password123
 testUser,password123

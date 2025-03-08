@@ -17,12 +17,14 @@ public class MyDMFileImpl implements IDao<User> {
     // 1) No-arg constructor uses "users.txt"
     public MyDMFileImpl() {
         this.filePath = "users.txt";
+        deleteFileIfExists();  // ✅ Force delete old file
         loadUsers();
     }
 
     // 2) String-arg constructor allows a custom file path
     public MyDMFileImpl(String filePath) {
         this.filePath = filePath;
+        deleteFileIfExists();  // ✅ Force delete old file
         loadUsers();
     }
 
@@ -40,6 +42,20 @@ public class MyDMFileImpl implements IDao<User> {
         users.put(user.getUsername(), user);
         writeUsersToFile();
         return true;
+    }
+
+    /**
+     * Deletes the file if it exists, ensuring a fresh environment every time.
+     */
+    private void deleteFileIfExists() {
+        File file = new File(filePath);
+        if (file.exists()) {
+            if (file.delete()) {
+                logger.info("Deleted existing file: " + filePath);
+            } else {
+                logger.warning("Failed to delete file: " + filePath);
+            }
+        }
     }
 
     private void loadUsers() {
