@@ -15,7 +15,7 @@ import queue.OrderQueue;
 import algorithm.TimeBasedAlgorithm;
 import model.Order;
 import algorithm.*;
-import app.utils.OrderLogger;
+import app.client.utils.OrderLogger;
 
 import java.util.HashMap;
 import java.util.Map;

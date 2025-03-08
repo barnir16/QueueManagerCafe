@@ -1,4 +1,4 @@
-package app.utils;
+package app.client.utils;
 
 import model.Order;
 import java.io.BufferedWriter;
@@ -6,11 +6,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Utility class for logging orders.
  */
 public class OrderLogger {
+    private static final Logger logger = Logger.getLogger(OrderLogger.class.getName());
     private static final String FILE_PATH = "orders_log.txt";
 
     public static void logOrders(List<Order> allOrders) {
@@ -47,23 +50,13 @@ public class OrderLogger {
                 }
             }
 
-            System.out.println("Orders logged successfully to " + FILE_PATH);
+            logger.info("Orders logged successfully to " + FILE_PATH);
         } catch (IOException e) {
-            System.err.println("Error writing to log file: " + e.getMessage());
+            logger.log(Level.SEVERE, "Error writing to log file", e);
         }
     }
 
-    /**
-     * Formats a LocalDateTime object into a string.
-     *
-     * @param time the LocalDateTime to format
-     * @param formatter the DateTimeFormatter to use
-     * @return the formatted time as a string, or "N/A" if the time is null
-     */
     private static String formatTime(java.time.LocalDateTime time, DateTimeFormatter formatter) {
-        if (time == null) {
-            return "N/A";
-        }
-        return time.format(formatter);
+        return (time == null) ? "N/A" : time.format(formatter);
     }
 }
