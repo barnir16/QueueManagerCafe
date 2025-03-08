@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="215.0" prefWidth="210.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Button layoutX="38.0" layoutY="128.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="43.0" text="Add" />
+      <Button layoutX="136.0" layoutY="174.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="63.0" text="Close" />
+      <TextField layoutX="38.0" layoutY="48.0" prefHeight="25.0" prefWidth="145.0" text="Item Name" />
+      <TextField layoutX="38.0" layoutY="86.0" prefHeight="25.0" prefWidth="145.0" text="Item Weight" />
+      <Label contentDisplay="TOP" layoutX="25.0" layoutY="14.0" prefHeight="17.0" prefWidth="158.0" text="Enter new item details:">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+   </children>
+</Pane>

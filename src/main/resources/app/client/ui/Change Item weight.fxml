@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="218.0" prefWidth="205.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TilePane layoutX="5.0" layoutY="7.0" prefHeight="37.0" prefWidth="195.0">
+         <children>
+            <Label prefHeight="30.0" prefWidth="195.0" text="Select an item and set weight" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </TilePane>
+      <MenuButton layoutX="14.0" layoutY="51.0" mnemonicParsing="false" text="Select Item">
+        <items>
+          <MenuItem mnemonicParsing="false" text="Action 1" />
+          <MenuItem mnemonicParsing="false" text="Action 2" />
+        </items>
+      </MenuButton>
+      <TextField layoutX="14.0" layoutY="97.0" text="New Weight" />
+      <Button layoutX="14.0" layoutY="138.0" mnemonicParsing="false" text="Apply" />
+      <Button layoutX="124.0" layoutY="179.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="62.0" text="Close" />
+   </children>
+</Pane>

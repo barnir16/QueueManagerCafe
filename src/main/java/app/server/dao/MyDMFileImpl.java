@@ -1,64 +1,80 @@
 package app.server.dao;
 
+import app.shared.User;
+
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- * File-based implementation of the IDao interface, storing User objects.
- */
-public class MyDMFileImpl<T> implements IDao<T> {
+public class MyDMFileImpl implements IDao<User> {
     private static final Logger logger = Logger.getLogger(MyDMFileImpl.class.getName());
-    private final String filePath;
 
+    private final String filePath;
+    private final Map<String, User> users = new HashMap<>();
+
+    // 1) No-arg constructor uses "users.txt"
+    public MyDMFileImpl() {
+        this.filePath = "users.txt";
+        loadUsers();
+    }
+
+    // 2) String-arg constructor allows a custom file path
     public MyDMFileImpl(String filePath) {
         this.filePath = filePath;
+        loadUsers();
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public T find(String id) {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filePath))) {
-            List<T> objects = (List<T>) ois.readObject();
-            // We'll rely on obj.toString().contains(id) or override equals if needed
-            for (T obj : objects) {
-                if (obj.toString().contains(id)) {
-                    return obj;
+    public User find(String username) {
+        return users.get(username);
+    }
+
+    @Override
+    public boolean save(User user) {
+        if (users.containsKey(user.getUsername())) {
+            logger.warning("User already exists: " + user.getUsername());
+            return false;
+        }
+        users.put(user.getUsername(), user);
+        writeUsersToFile();
+        return true;
+    }
+
+    private void loadUsers() {
+        File file = new File(filePath);
+        if (!file.exists()) {
+            logger.info("No existing file found at " + filePath + ". Starting fresh.");
+            return;
+        }
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            users.clear();
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length == 2) {
+                    users.put(parts[0], new User(parts[0], parts[1]));
+                } else {
+                    logger.warning("Skipping malformed line: " + line);
                 }
             }
-        } catch (IOException | ClassNotFoundException e) {
-            logger.log(Level.SEVERE, "Error reading from file: " + filePath, e);
+            logger.info("Users loaded from " + filePath + ": " + users.size() + " total.");
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, "Failed to load users from file", e);
         }
-        return null;
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public boolean save(T entity) {
-        List<T> objects = new ArrayList<>();
-
-        File file = new File(filePath);
-        if (file.exists()) {
-            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filePath))) {
-                objects = (List<T>) ois.readObject();
-            } catch (IOException | ClassNotFoundException e) {
-                logger.log(Level.SEVERE, "Error loading existing data from " + filePath, e);
+    private void writeUsersToFile() {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
+            for (User user : users.values()) {
+                bw.write(user.getUsername() + "," + user.getPassword());
+                bw.newLine();
             }
-        }
-
-        // Add new entity
-        objects.add(entity);
-
-        // Save all objects
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
-            oos.writeObject(objects);
-            logger.info("Saved entity to " + filePath);
-            return true;
+            logger.info("Users saved to " + filePath);
         } catch (IOException e) {
-            logger.log(Level.SEVERE, "Error writing to file: " + filePath, e);
-            return false;
+            logger.log(Level.SEVERE, "Failed to write users to file", e);
         }
     }
 }

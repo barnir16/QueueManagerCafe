@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<SplitPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1">
+    <items>
+        <SplitPane dividerPositions="0.3" prefHeight="160.0" prefWidth="200.0">
+            <items>
+                <AnchorPane prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: #2c3e50;">
+                    <children>
+                        <Label layoutX="20.0" layoutY="11.0" style="-fx-font-size: 20px; -fx-text-fill: #ecf0f1;" text="Main Menu" />
+
+                        <VBox layoutX="9.0" layoutY="40.0" prefWidth="160.0" spacing="10.0">
+                            <children>
+                                <Label style="-fx-font-size: 14px; -fx-text-fill: #ecf0f1;" text="Cappuccino" />
+                        <HBox layoutX="10.0" layoutY="80.0" spacing="10">
+                           <children>
+                              <Button mnemonicParsing="false" prefHeight="29.0" prefWidth="18.0" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-background-radius: 5;" text="+">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button mnemonicParsing="false" prefHeight="29.0" prefWidth="28.0" style="-fx-background-color: #c0392b; -fx-text-fill: white; -fx-background-radius: 5;" text="-">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </HBox>
+
+                                <Label style="-fx-font-size: 14px; -fx-text-fill: #ecf0f1;" text="Espresso" />
+                        <HBox layoutX="10.0" layoutY="150.0" spacing="10">
+                           <children>
+                              <Button mnemonicParsing="false" prefHeight="3.0" prefWidth="0.0" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-background-radius: 5;" text="+">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button mnemonicParsing="false" prefHeight="29.0" prefWidth="28.0" style="-fx-background-color: #c0392b; -fx-text-fill: white; -fx-background-radius: 5;" text="-">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </HBox>
+
+                                <Label style="-fx-font-size: 14px; -fx-text-fill: #ecf0f1;" text="Sandwich" />
+                                <HBox spacing="10">
+                                    <Button mnemonicParsing="false" prefHeight="3.0" prefWidth="0.0" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-background-radius: 5;" text="+">
+                                        <font>
+                                            <Font name="System Bold" size="14.0" />
+                                        </font>
+                                    </Button>
+                                    <Button mnemonicParsing="false" prefHeight="29.0" prefWidth="28.0" style="-fx-background-color: #c0392b; -fx-text-fill: white; -fx-background-radius: 5;" text="-">
+                                        <font>
+                                            <Font name="System Bold" size="14.0" />
+                                        </font>
+                                    </Button>
+                                </HBox>
+                                <HBox spacing="10" />
+                                <HBox spacing="10" />
+                            </children>
+                        </VBox>
+
+                        <VBox layoutX="14.0" layoutY="246.0" prefWidth="160.0" spacing="15.0">
+                            <children>
+                                <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-background-radius: 5;" text="Add New Item" />
+                                <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 5;" text="Remove Item" />
+                                <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #f1c40f; -fx-text-fill: black; -fx-background-radius: 5;" text="Change Item Weight" />
+                            </children>
+                        </VBox>
+                    </children>
+                </AnchorPane>
+
+                <VBox alignment="CENTER" prefHeight="400.0" prefWidth="400.0" spacing="20.0" style="-fx-background-color: #ecf0f1; -fx-padding: 20.0;">
+                    <children>
+                        <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Details Panel" />
+                        <Label style="-fx-font-size: 14px;" text="Here you can view more details about selected items." />
+                    </children>
+                </VBox>
+            </items>
+        </SplitPane>
+    </items>
+</SplitPane>

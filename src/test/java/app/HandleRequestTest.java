@@ -1,8 +1,5 @@
-package app;
+package app.server.service;
 
-import app.server.service.HandleRequest;
-import app.server.service.Request;
-import app.server.service.Response;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.*;
 
@@ -19,16 +16,17 @@ class HandleRequestTest {
     @BeforeEach
     void setUp() {
         gson = new Gson();
-        handleRequest = new HandleRequest(null); // Null socket since we're only testing logic
+        handleRequest = new HandleRequest(null); // No socket needed for unit testing
     }
 
     @Test
-    void testLoginRequest() throws Exception {
+    void testSaveUserRequest() throws Exception {
         Method method = HandleRequest.class.getDeclaredMethod("processRequest", Request.class);
-        method.setAccessible(true); // Allow access to the protected method
+        method.setAccessible(true); // Allow access to protected/private method
 
+        // Prepare request
         Map<String, String> headers = new HashMap<>();
-        headers.put("action", "LOGIN");
+        headers.put("action", "saveUser");  // ✅ Matches HandleRequest action
 
         Map<String, String> body = new HashMap<>();
         body.put("username", "testUser");
@@ -37,24 +35,44 @@ class HandleRequestTest {
         Request request = new Request(headers, body);
         Response response = (Response) method.invoke(handleRequest, request);
 
-        assertEquals("FAILED", response.getMessage(), "User should not be authenticated initially");
+        assertEquals("SAVED", response.getMessage(), "User should be saved successfully");
     }
 
     @Test
-    void testRegisterRequest() throws Exception {
+    void testFindUserRequest() throws Exception {
         Method method = HandleRequest.class.getDeclaredMethod("processRequest", Request.class);
-        method.setAccessible(true); // Allow access to the protected method
+        method.setAccessible(true); // Allow access to protected/private method
 
+        // First, save the user
+        testSaveUserRequest();
+
+        // Prepare request to find user
         Map<String, String> headers = new HashMap<>();
-        headers.put("action", "REGISTER");
+        headers.put("action", "findUser");
 
         Map<String, String> body = new HashMap<>();
-        body.put("username", "newUser");
-        body.put("password", "newPass");
+        body.put("username", "testUser");
 
         Request request = new Request(headers, body);
         Response response = (Response) method.invoke(handleRequest, request);
 
-        assertEquals("REGISTERED", response.getMessage(), "User should be registered successfully");
+        assertTrue(response.getMessage().contains("FOUND"), "User should be found");
+    }
+
+    @Test
+    void testFindNonExistingUserRequest() throws Exception {
+        Method method = HandleRequest.class.getDeclaredMethod("processRequest", Request.class);
+        method.setAccessible(true); // Allow access to protected/private method
+
+        Map<String, String> headers = new HashMap<>();
+        headers.put("action", "findUser");
+
+        Map<String, String> body = new HashMap<>();
+        body.put("username", "unknownUser");
+
+        Request request = new Request(headers, body);
+        Response response = (Response) method.invoke(handleRequest, request);
+
+        assertEquals("NOT FOUND", response.getMessage(), "User should not be found");
     }
 }

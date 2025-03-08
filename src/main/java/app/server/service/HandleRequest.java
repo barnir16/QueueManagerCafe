@@ -48,7 +48,7 @@ public class HandleRequest implements Runnable {
         }
     }
 
-    protected Response processRequest(Request request) {
+    public Response processRequest(Request request) {
         if (request == null || request.getHeaders() == null) {
             return new Response("ERROR: Invalid JSON format");
         }

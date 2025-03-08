@@ -6,16 +6,23 @@ import app.shared.User;
 import org.junit.jupiter.api.*;
 
 import java.io.File;
-
+import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserServiceTest {
     private UserService userService;
+    private static final String TEST_FILE = "users.txt";
 
     @BeforeEach
     void setUp() {
-        UserDaoImpl userDao = new UserDaoImpl();  // Use UserDaoImpl instead of MyDMFileImpl
-        userService = new UserService(userDao);   // Now matches constructor
+        // Ensure a clean test file before each run
+        File file = new File(TEST_FILE);
+        if (file.exists()) {
+            file.delete();
+        }
+
+        UserDaoImpl userDao = new UserDaoImpl();
+        userService = new UserService(userDao);
     }
 
     @Test
@@ -39,6 +46,7 @@ class UserServiceTest {
 
     @AfterEach
     void tearDown() {
-        new File("users.txt").delete(); // Clean up the user file after each test
+        // Ensure users.txt is deleted after each test
+        new File(TEST_FILE).delete();
     }
 }
