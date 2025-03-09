@@ -1,7 +1,7 @@
-package app.Server.service;
+package app.server.service;
 
-import app.Server.dao.IDao;
-import app.Server.dao.MyDMFileImpl;
+import app.server.dao.IDao;
+import app.server.dao.MyDMFileImpl;
 import app.shared.User;
 
 /**
@@ -10,28 +10,23 @@ import app.shared.User;
 public class UserService {
     private final IDao<User> userDao;
 
-    // Default constructor: uses "users.txt"
+    // Default constructor -> uses "users.txt"
     public UserService() {
         this.userDao = new MyDMFileImpl("users.txt");
     }
 
-    // Constructor for testing or custom injection
+    // For testing or injection
     public UserService(IDao<User> userDao) {
         this.userDao = userDao;
     }
 
-    /**
-     * Authenticates a user by username & password.
-     */
     public boolean authenticate(String username, String password) {
         User user = userDao.find(username);
-        return user != null && user.getPassword().equals(password);
+        return (user != null && user.getPassword().equals(password));
     }
 
-    /**
-     * Registers a new user if they don't already exist.
-     */
     public boolean register(String username, String password) {
+        // Return false if user already exists
         return userDao.save(new User(username, password));
     }
 }

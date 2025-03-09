@@ -1,4 +1,4 @@
-package app.Server.dao;
+package app.server.dao;
 
 public interface IDao<T> {
     T find(String id);

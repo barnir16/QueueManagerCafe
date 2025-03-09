@@ -1,7 +1,6 @@
-package app.Server.dao;
+package app.server.dao;
 
 import app.shared.User;
-
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,21 +18,31 @@ public class MyDMFileImpl implements IDao<User> {
 
     /**
      * No-arg constructor defaults to "users.txt"
+     * Does NOT delete the file if it already exists (keeps existing data).
      */
     public MyDMFileImpl() {
         this.filePath = "users.txt";
-        // Optionally deleteFileIfExists() if you want a fresh file every time
-        // deleteFileIfExists();
         loadUsers();
     }
 
     /**
      * Allows a custom file path (e.g. "test_users.txt").
+     * Does NOT delete the file if it already exists (keeps existing data).
      */
     public MyDMFileImpl(String filePath) {
         this.filePath = filePath;
-        // Optionally deleteFileIfExists() if you want a fresh file every time
-        // deleteFileIfExists();
+        loadUsers();
+    }
+
+    /**
+     * Allows a custom file path AND optionally starts fresh (deletes old file).
+     * Useful for unit tests to ensure a clean environment each time.
+     */
+    public MyDMFileImpl(String filePath, boolean fresh) {
+        this.filePath = filePath;
+        if (fresh) {
+            deleteFileIfExists();
+        }
         loadUsers();
     }
 
@@ -88,10 +97,10 @@ public class MyDMFileImpl implements IDao<User> {
     }
 
     /**
-     * Writes the in-memory users map back to file.
+     * Writes the in-memory users map back to file (overwriting it).
      */
     private synchronized void writeUsersToFile() {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath, false))) {
             for (User user : users.values()) {
                 bw.write(user.getUsername() + "," + user.getPassword());
                 bw.newLine();
@@ -103,9 +112,9 @@ public class MyDMFileImpl implements IDao<User> {
     }
 
     /**
-     * Utility if you want a fresh environment on every new MyDMFileImpl instance.
+     * Utility method to delete the file if it exists.
+     * Called in the (String, boolean) constructor if fresh==true.
      */
-    @SuppressWarnings("unused")
     private void deleteFileIfExists() {
         File file = new File(filePath);
         if (file.exists()) {

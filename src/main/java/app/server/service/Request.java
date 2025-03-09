@@ -1,15 +1,20 @@
-package app.Server.service;
+package app.server.service;
 
 import java.util.Map;
 
 /**
- * Represents a generic JSON request from the client.
+ * Represents a generic JSON request from the client:
+ * {
+ *   "headers": { "action": "LOGIN" },
+ *   "body":    { "username": "...", "password": "..." }
+ * }
  */
 public class Request {
     private Map<String, String> headers;
     private Map<String, String> body;
 
-    public Request() { }
+    public Request() {
+    }
 
     public Request(Map<String, String> headers, Map<String, String> body) {
         this.headers = headers;

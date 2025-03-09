@@ -1,6 +1,6 @@
-package app.Server.service;
+package app.server.service;
 
-import app.Server.dao.MyDMFileImpl;
+import app.server.dao.MyDMFileImpl;
 import app.shared.User;
 import org.junit.jupiter.api.*;
 
@@ -14,8 +14,13 @@ class MainCafeServiceTest {
 
     @BeforeEach
     void setUp() {
-        deleteTestFile();  // Ensure a clean test environment
-        userDao = new MyDMFileImpl();
+        // forcibly delete test_users.txt so it’s guaranteed empty
+        File file = new File(TEST_FILE);
+        if (file.exists()) {
+            file.delete();
+        }
+        // now create a MyDMFileImpl with that test file
+        userDao = new MyDMFileImpl(TEST_FILE);
     }
 
     @Test
@@ -42,10 +47,7 @@ class MainCafeServiceTest {
 
     @AfterEach
     void tearDown() {
-        deleteTestFile();
-    }
-
-    private void deleteTestFile() {
+        // optional: delete test file again
         File file = new File(TEST_FILE);
         if (file.exists()) {
             file.delete();

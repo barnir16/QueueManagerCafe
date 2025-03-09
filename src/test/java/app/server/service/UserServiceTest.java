@@ -1,7 +1,7 @@
-package app.Server.service;
+package app.server.service;
 
-import app.Server.dao.IDao;
-import app.Server.dao.MyDMFileImpl;
+import app.server.dao.IDao;
+import app.server.dao.MyDMFileImpl;
 import app.shared.User;
 import org.junit.jupiter.api.*;
 

@@ -1,18 +1,21 @@
-package app.Server.service;
+package app.server.service;
 
-import app.Server.dao.IDao;
-import app.Server.dao.MyDMFileImpl;
+import app.server.dao.IDao;
+import app.server.dao.MyDMFileImpl;
 import app.shared.User;
-
 import java.util.logging.Logger;
 
+/**
+ * Another example service class for "saveUser"/"findUser" calls,
+ * used by HandleRequest's "saveUser"/"findUser" actions.
+ */
 public class MainCafeService {
     private static final Logger logger = Logger.getLogger(MainCafeService.class.getName());
     private final IDao<User> dao;
 
-    // Default constructor uses "users.txt"
+    // Default -> "users.txt"
     public MainCafeService() {
-        this.dao = new MyDMFileImpl("users.txt"); // ✅ No <>
+        this.dao = new MyDMFileImpl("users.txt");
     }
 
     public MainCafeService(IDao<User> dao) {
@@ -25,8 +28,7 @@ public class MainCafeService {
             logger.warning("User with username '" + username + "' already exists.");
             return false;
         }
-        User newUser = new User(username, password);
-        return dao.save(newUser);
+        return dao.save(new User(username, password));
     }
 
     public User findUser(String username) {

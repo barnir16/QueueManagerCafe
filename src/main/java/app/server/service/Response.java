@@ -1,10 +1,11 @@
-package app.Server.service;
+package app.server.service; // or similar
 
-/**
- * Represents a JSON response sent back to the client.
- */
 public class Response {
     private String message;
+
+    // No-arg constructor for JSON deserialization
+    public Response() {
+    }
 
     public Response(String message) {
         this.message = message;

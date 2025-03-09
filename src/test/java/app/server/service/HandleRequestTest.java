@@ -1,5 +1,5 @@
-package app.Server.service;
-import app.Server.dao.MyDMFileImpl;
+package app.server.service;
+import app.server.dao.MyDMFileImpl;
 
 import com.google.gson.Gson;
 import org.junit.jupiter.api.*;

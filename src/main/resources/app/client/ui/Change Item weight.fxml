@@ -4,25 +4,60 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="218.0" prefWidth="205.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <TilePane layoutX="5.0" layoutY="7.0" prefHeight="37.0" prefWidth="195.0">
-         <children>
-            <Label prefHeight="30.0" prefWidth="195.0" text="Select an item and set weight" textAlignment="CENTER">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Label>
-         </children>
-      </TilePane>
-      <MenuButton layoutX="14.0" layoutY="51.0" mnemonicParsing="false" text="Select Item">
-        <items>
-          <MenuItem mnemonicParsing="false" text="Action 1" />
-          <MenuItem mnemonicParsing="false" text="Action 2" />
-        </items>
-      </MenuButton>
-      <TextField layoutX="14.0" layoutY="97.0" text="New Weight" />
-      <Button layoutX="14.0" layoutY="138.0" mnemonicParsing="false" text="Apply" />
-      <Button layoutX="124.0" layoutY="179.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="62.0" text="Close" />
-   </children>
+<!--
+  Merged with fx:controller and fx:id so you can handle button clicks in
+  ChangeItemWeightController.java
+-->
+<Pane xmlns="http://javafx.com/javafx/11.0.14-internal"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="app.client.ui.ChangeItemWeightController"
+      prefHeight="218.0" prefWidth="205.0"
+      style="-fx-background-color: #ecf0f1;">
+
+    <children>
+        <TilePane layoutX="5.0" layoutY="7.0"
+                  prefHeight="37.0" prefWidth="195.0">
+            <children>
+                <Label prefHeight="30.0" prefWidth="195.0"
+                       text="Select an item and set weight"
+                       textAlignment="CENTER"
+                       style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+            </children>
+        </TilePane>
+
+        <!-- A MenuButton for selecting item -->
+        <MenuButton fx:id="itemMenu"
+                    layoutX="14.0" layoutY="51.0"
+                    mnemonicParsing="false"
+                    text="Select Item"
+                    style="-fx-background-color: #bdc3c7; -fx-text-fill: #2c3e50; -fx-background-radius: 5;">
+            <items>
+                <MenuItem mnemonicParsing="false" text="Action 1" />
+                <MenuItem mnemonicParsing="false" text="Action 2" />
+            </items>
+        </MenuButton>
+
+        <!-- TextField for new weight -->
+        <TextField fx:id="weightField"
+                   layoutX="14.0" layoutY="97.0"
+                   text="New Weight"
+                   style="-fx-background-color: white;" />
+
+        <!-- Apply button -->
+        <Button fx:id="applyButton"
+                layoutX="14.0" layoutY="138.0"
+                mnemonicParsing="false"
+                style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-background-radius: 5;"
+                text="Apply"
+                onAction="#handleApply" />
+
+        <!-- Close button -->
+        <Button fx:id="closeButton"
+                layoutX="124.0" layoutY="179.0"
+                mnemonicParsing="false"
+                prefHeight="25.0" prefWidth="62.0"
+                style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 5;"
+                text="Close"
+                onAction="#handleClose" />
+    </children>
 </Pane>

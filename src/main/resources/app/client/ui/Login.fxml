@@ -1,14 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="app.client.ui.Login"
-            prefHeight="400.0" prefWidth="600.0">
+            fx:controller="app.client.ui.LoginController"
+            prefHeight="400.0" prefWidth="600.0"
+            style="-fx-background-image: url('images/CafeLogin.jpeg');
+                   -fx-background-size: cover;
+                   -fx-background-position: center;
+                   -fx-background-repeat: no-repeat;">
 
+    <children>
+        <!-- A centered VBox for the login form -->
+        <VBox alignment="CENTER"
+              spacing="15.0"
+              layoutX="100.0" layoutY="80.0"
+              prefWidth="400" prefHeight="240"
+              style="-fx-background-color: rgba(255,255,255,0.8); -fx-background-radius: 10; -fx-padding: 20;">
+            <!-- Title Label -->
+            <Label text="Login"
+                   style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+
+            <!-- Username Row -->
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Username:"
+                       style="-fx-text-fill: #2c3e50; -fx-font-size: 14px;" />
+                <TextField fx:id="usernameField"
+                           promptText="Enter username"
+                           style="-fx-background-color: white; -fx-text-fill: #2c3e50;"
+                           prefWidth="200.0" />
+            </HBox>
+
+            <!-- Password Row -->
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Password:"
+                       style="-fx-text-fill: #2c3e50; -fx-font-size: 14px;" />
+                <PasswordField fx:id="passwordField"
+                               promptText="Enter password"
+                               style="-fx-background-color: white; -fx-text-fill: #2c3e50;"
+                               prefWidth="200.0" />
+            </HBox>
+
+            <!-- Response Label (for errors/success) -->
+            <Label fx:id="responseLabel"
+                   textFill="#c0392b"
+                   style="-fx-font-size: 14px;"
+                   wrapText="true" />
+
+            <!-- Buttons Row -->
+            <HBox alignment="CENTER" spacing="20">
+                <Button text="Login"
+                        style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-background-radius: 5;"
+                        onAction="#handleLogin" />
+
+                <Button text="Register"
+                        style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-background-radius: 5;"
+                        onAction="#handleRegister" />
+            </HBox>
+        </VBox>
+    </children>
 </AnchorPane>
