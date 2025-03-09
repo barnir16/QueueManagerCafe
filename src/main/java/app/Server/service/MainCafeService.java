@@ -1,7 +1,7 @@
-package app.server.service;
+package app.Server.service;
 
-import app.server.dao.IDao;
-import app.server.dao.MyDMFileImpl;
+import app.Server.dao.IDao;
+import app.Server.dao.MyDMFileImpl;
 import app.shared.User;
 
 import java.util.logging.Logger;

@@ -1,4 +1,4 @@
-package app.server.dao;
+package app.Server.dao;
 
 import app.shared.User;
 

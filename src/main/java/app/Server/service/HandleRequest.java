@@ -1,4 +1,4 @@
-package app.server.service;
+package app.Server.service;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -16,12 +16,18 @@ import java.util.logging.Logger;
 public class HandleRequest implements Runnable {
     private static final Logger logger = Logger.getLogger(HandleRequest.class.getName());
     private final Socket clientSocket;
-    private final MainCafeService service; // Using MainCafeService now
+    private final MainCafeService service;
     private final Gson gson = new Gson();
 
+    // Default constructor for production: uses new MainCafeService() => "users.txt"
     public HandleRequest(Socket clientSocket) {
+        this(clientSocket, new MainCafeService());
+    }
+
+    // New constructor for testing or custom injection
+    public HandleRequest(Socket clientSocket, MainCafeService service) {
         this.clientSocket = clientSocket;
-        this.service = new MainCafeService(); // Business logic
+        this.service = service;
     }
 
     @Override

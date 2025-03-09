@@ -1,4 +1,4 @@
-package app.server.service;
+package app.Server.service;
 
 /**
  * Represents a JSON response sent back to the client.

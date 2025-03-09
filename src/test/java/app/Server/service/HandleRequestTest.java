@@ -1,8 +1,10 @@
-package app.server.service;
+package app.Server.service;
+import app.Server.dao.MyDMFileImpl;
 
 import com.google.gson.Gson;
 import org.junit.jupiter.api.*;
 
+import java.io.File;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,21 +14,37 @@ import static org.junit.jupiter.api.Assertions.*;
 class HandleRequestTest {
     private HandleRequest handleRequest;
     private Gson gson;
+    private static final String TEST_FILE = "test_users.txt";
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws Exception {
+        // 1) Delete test file so each test is fresh
+        File file = new File(TEST_FILE);
+        if (file.exists()) {
+            file.delete();
+        }
+
+        // 2) Create a new MyDMFileImpl that references test_users.txt
+        MyDMFileImpl dao = new MyDMFileImpl(TEST_FILE);
+
+        // 3) Create a MainCafeService with that test file
+        MainCafeService testService = new MainCafeService(dao);
+
+        // 4) Inject that service into HandleRequest
+        handleRequest = new HandleRequest(null, testService);
+
+        // 5) GSON init
         gson = new Gson();
-        handleRequest = new HandleRequest(null); // No socket needed for unit testing
     }
 
     @Test
     void testSaveUserRequest() throws Exception {
         Method method = HandleRequest.class.getDeclaredMethod("processRequest", Request.class);
-        method.setAccessible(true); // Allow access to protected/private method
+        method.setAccessible(true); // Allow access to private method
 
         // Prepare request
         Map<String, String> headers = new HashMap<>();
-        headers.put("action", "saveUser");  // ✅ Matches HandleRequest action
+        headers.put("action", "saveUser");
 
         Map<String, String> body = new HashMap<>();
         body.put("username", "testUser");
@@ -41,10 +59,10 @@ class HandleRequestTest {
     @Test
     void testFindUserRequest() throws Exception {
         Method method = HandleRequest.class.getDeclaredMethod("processRequest", Request.class);
-        method.setAccessible(true); // Allow access to protected/private method
+        method.setAccessible(true);
 
         // First, save the user
-        testSaveUserRequest();
+        testSaveUserRequest();  // reuses the test above
 
         // Prepare request to find user
         Map<String, String> headers = new HashMap<>();
@@ -62,8 +80,9 @@ class HandleRequestTest {
     @Test
     void testFindNonExistingUserRequest() throws Exception {
         Method method = HandleRequest.class.getDeclaredMethod("processRequest", Request.class);
-        method.setAccessible(true); // Allow access to protected/private method
+        method.setAccessible(true);
 
+        // Attempt to find a user that doesn't exist
         Map<String, String> headers = new HashMap<>();
         headers.put("action", "findUser");
 

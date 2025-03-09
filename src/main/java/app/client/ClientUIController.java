@@ -1,6 +1,6 @@
 package app.client;
 
-import app.server.service.Request;
+import app.Server.service.Request;
 import com.google.gson.Gson;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

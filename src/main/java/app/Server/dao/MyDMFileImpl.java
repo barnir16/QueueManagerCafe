@@ -1,4 +1,4 @@
-package app.server.dao;
+package app.Server.dao;
 
 import app.shared.User;
 
@@ -8,60 +8,65 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Single file-based DAO for User objects. Implements IDao<User>.
+ */
 public class MyDMFileImpl implements IDao<User> {
     private static final Logger logger = Logger.getLogger(MyDMFileImpl.class.getName());
 
     private final String filePath;
     private final Map<String, User> users = new HashMap<>();
 
-    // 1) No-arg constructor uses "users.txt"
+    /**
+     * No-arg constructor defaults to "users.txt"
+     */
     public MyDMFileImpl() {
         this.filePath = "users.txt";
-        deleteFileIfExists();  // ✅ Force delete old file
+        // Optionally deleteFileIfExists() if you want a fresh file every time
+        // deleteFileIfExists();
         loadUsers();
     }
 
-    // 2) String-arg constructor allows a custom file path
+    /**
+     * Allows a custom file path (e.g. "test_users.txt").
+     */
     public MyDMFileImpl(String filePath) {
         this.filePath = filePath;
-        deleteFileIfExists();  // ✅ Force delete old file
+        // Optionally deleteFileIfExists() if you want a fresh file every time
+        // deleteFileIfExists();
         loadUsers();
     }
 
     @Override
-    public User find(String username) {
+    public synchronized User find(String username) {
         return users.get(username);
     }
 
     @Override
-    public boolean save(User user) {
+    public synchronized boolean save(User user) {
+        // If user already exists, fail
         if (users.containsKey(user.getUsername())) {
-            logger.warning("User already exists: " + user.getUsername());
+            logger.warning("Attempted to save duplicate user: " + user.getUsername());
             return false;
         }
+        // Otherwise, store & persist
         users.put(user.getUsername(), user);
         writeUsersToFile();
         return true;
     }
 
     /**
-     * Deletes the file if it exists, ensuring a fresh environment every time.
+     * Loads users from the file into memory.
      */
-    private void deleteFileIfExists() {
-        File file = new File(filePath);
-        if (file.exists()) {
-            if (file.delete()) {
-                logger.info("Deleted existing file: " + filePath);
-            } else {
-                logger.warning("Failed to delete file: " + filePath);
-            }
-        }
-    }
-
     private void loadUsers() {
         File file = new File(filePath);
         if (!file.exists()) {
-            logger.info("No existing file found at " + filePath + ". Starting fresh.");
+            try {
+                file.createNewFile();
+                logger.info("User file not found, created new: " + filePath);
+            } catch (IOException e) {
+                logger.log(Level.SEVERE, "Failed to create user file", e);
+            }
             return;
         }
 
@@ -76,21 +81,39 @@ public class MyDMFileImpl implements IDao<User> {
                     logger.warning("Skipping malformed line: " + line);
                 }
             }
-            logger.info("Users loaded from " + filePath + ": " + users.size() + " total.");
+            logger.info("User data loaded successfully. Total users: " + users.size());
         } catch (IOException e) {
             logger.log(Level.SEVERE, "Failed to load users from file", e);
         }
     }
 
-    private void writeUsersToFile() {
+    /**
+     * Writes the in-memory users map back to file.
+     */
+    private synchronized void writeUsersToFile() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
             for (User user : users.values()) {
                 bw.write(user.getUsername() + "," + user.getPassword());
                 bw.newLine();
             }
-            logger.info("Users saved to " + filePath);
+            logger.info("User data written to file successfully.");
         } catch (IOException e) {
-            logger.log(Level.SEVERE, "Failed to write users to file", e);
+            logger.log(Level.SEVERE, "Error writing users to file", e);
+        }
+    }
+
+    /**
+     * Utility if you want a fresh environment on every new MyDMFileImpl instance.
+     */
+    @SuppressWarnings("unused")
+    private void deleteFileIfExists() {
+        File file = new File(filePath);
+        if (file.exists()) {
+            if (file.delete()) {
+                logger.info("Deleted existing file: " + filePath);
+            } else {
+                logger.warning("Failed to delete file: " + filePath);
+            }
         }
     }
 }

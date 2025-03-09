@@ -1,4 +1,4 @@
-package app.server.service;
+package app.Server.service;
 
 import java.util.Map;
 

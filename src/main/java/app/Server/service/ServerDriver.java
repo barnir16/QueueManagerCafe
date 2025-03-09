@@ -1,4 +1,4 @@
-package app.server.service;
+package app.Server.service;
 
 /**
  * Main driver to start the server.

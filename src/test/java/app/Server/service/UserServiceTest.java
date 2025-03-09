@@ -1,27 +1,27 @@
 package app.Server.service;
 
-import app.server.dao.UserDaoImpl;
-import app.server.service.UserService;
+import app.Server.dao.IDao;
+import app.Server.dao.MyDMFileImpl;
 import app.shared.User;
 import org.junit.jupiter.api.*;
 
 import java.io.File;
-import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserServiceTest {
     private UserService userService;
-    private static final String TEST_FILE = "users.txt";
+    private static final String TEST_FILE = "test_users.txt";
 
     @BeforeEach
     void setUp() {
-        // Ensure a clean test file before each run
+        // Ensure a clean file before each run
         File file = new File(TEST_FILE);
         if (file.exists()) {
             file.delete();
         }
 
-        UserDaoImpl userDao = new UserDaoImpl();
+        IDao<User> userDao = new MyDMFileImpl(TEST_FILE);  // Use MyDMFileImpl for test
         userService = new UserService(userDao);
     }
 
@@ -46,7 +46,7 @@ class UserServiceTest {
 
     @AfterEach
     void tearDown() {
-        // Ensure users.txt is deleted after each test
+        // Clean up after each test
         new File(TEST_FILE).delete();
     }
 }

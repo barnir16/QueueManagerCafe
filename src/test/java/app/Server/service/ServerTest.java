@@ -1,4 +1,4 @@
-package app;
+package app.Server.service;
 
 import org.junit.jupiter.api.*;
 
