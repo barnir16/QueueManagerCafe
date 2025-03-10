@@ -20,19 +20,19 @@ public class ClientUIController {
     // Called when user clicks "Add New Item"
     @FXML
     private void handleOpenAddItem() {
-        openNewWindow("/app/client/ui/Add new Item.fxml", "Add New Item");
+        openNewWindow("/app/client/ui/AddNewItem.fxml", "Add New Item");
     }
 
     // Called when user clicks "Remove Item"
     @FXML
     private void handleRemoveItem() {
-        openNewWindow("/app/client/ui/Remove Item.fxml", "Remove Item");
+        openNewWindow("/app/client/ui/RemoveItem.fxml", "Remove Item");
     }
 
     // Called when user clicks "Change Item Weight"
     @FXML
     private void handleOpenChangeWeight() {
-        openNewWindow("/app/client/ui/Change Item weight.fxml", "Change Item Weight");
+        openNewWindow("/app/client/ui/ChangeItemWeight.fxml", "Change Item Weight");
     }
 
     /**

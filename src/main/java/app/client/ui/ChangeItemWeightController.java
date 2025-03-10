@@ -1,46 +1,66 @@
 package app.client.ui;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import javafx.event.ActionEvent;
-import javafx.scene.Node;
 import javafx.stage.Stage;
 
+import java.util.List;
+
+/**
+ * Controller for ChangeItemWeight.fxml
+ * Shows a combo of existing items, user enters new weight, calls mainController.setWeightForItem(...)
+ */
 public class ChangeItemWeightController {
 
-    @FXML private MenuButton itemMenu;
+    @FXML private ComboBox<String> itemCombo;
     @FXML private TextField weightField;
+    @FXML private Button applyButton;
+    @FXML private Button cancelButton;
 
-    @FXML
-    private void initialize() {
-        // Example: populate the menu items
-        MenuItem item1 = new MenuItem("Action 1");
-        item1.setOnAction(e -> itemMenu.setText("Action 1"));
-        MenuItem item2 = new MenuItem("Action 2");
-        item2.setOnAction(e -> itemMenu.setText("Action 2"));
+    private MainCafeController mainController;
 
-        itemMenu.getItems().addAll(item1, item2);
+    public void setMainController(MainCafeController mainController) {
+        this.mainController = mainController;
+    }
+
+    /**
+     * Called by MainCafeController to populate the combo with current items.
+     */
+    public void initItems(List<String> items) {
+        itemCombo.getItems().setAll(items);
     }
 
     @FXML
-    private void handleApply(ActionEvent event) {
-        String selectedItem = itemMenu.getText();
-        String newWeight = weightField.getText();
-        System.out.println("Change weight of " + selectedItem + " to " + newWeight);
-
-        // your logic
-        closeWindow(event);
+    private void handleApply() {
+        String selectedItem = itemCombo.getValue();
+        if (selectedItem == null || selectedItem.isEmpty()) {
+            System.out.println("No item selected");
+            return;
+        }
+        try {
+            int newWeight = Integer.parseInt(weightField.getText());
+            if (newWeight <= 0) {
+                System.out.println("Weight must be > 0");
+                return;
+            }
+            if (mainController != null) {
+                mainController.setWeightForItem(selectedItem, newWeight);
+            }
+            close();
+        } catch (NumberFormatException ex) {
+            System.out.println("Invalid weight");
+        }
     }
 
     @FXML
-    private void handleClose(ActionEvent event) {
-        closeWindow(event);
+    private void handleCancel() {
+        close();
     }
 
-    private void closeWindow(ActionEvent event) {
-        Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
+    private void close() {
+        Stage stage = (Stage) itemCombo.getScene().getWindow();
         stage.close();
     }
 }

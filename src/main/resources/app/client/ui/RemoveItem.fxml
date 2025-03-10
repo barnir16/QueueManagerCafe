@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="app.client.ui.RemoveItemController"
+            prefHeight="150.0" prefWidth="250.0"
+            style="-fx-background-color: #ecf0f1; -fx-padding: 10;">
+
+    <children>
+        <Label layoutX="10.0" layoutY="10.0"
+               text="Remove an Item"
+               style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+
+        <ComboBox fx:id="itemComboBox"
+                  layoutX="10.0" layoutY="50.0"
+                  prefWidth="200.0" />
+
+        <Button fx:id="removeButton"
+                layoutX="10.0" layoutY="100.0"
+                text="Remove"
+                onAction="#handleRemove"
+                style="-fx-background-color: #e67e22; -fx-text-fill: white;" />
+
+        <Button fx:id="cancelButton"
+                layoutX="130.0" layoutY="100.0"
+                text="Cancel"
+                onAction="#handleCancel"
+                style="-fx-background-color: #95a5a6; -fx-text-fill: white;" />
+    </children>
+</AnchorPane>

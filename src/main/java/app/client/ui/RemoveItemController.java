@@ -1,38 +1,51 @@
 package app.client.ui;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Button;
-import javafx.event.ActionEvent;
-import javafx.scene.Node;
+import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
 
+import java.util.List;
+
+/**
+ * Controller for RemoveItem.fxml
+ * Shows a ComboBox of existing items, user clicks "Remove" -> calls mainController.removeItemFromMenu(...)
+ */
 public class RemoveItemController {
 
     @FXML private ComboBox<String> itemComboBox;
-    // maybe a remove button, cancel button
+    @FXML private Button removeButton;
+    @FXML private Button cancelButton;
 
-    @FXML
-    private void initialize() {
-        // Populate comboBox if desired
-        itemComboBox.getItems().addAll("Cappuccino", "Espresso", "Sandwich");
+    private MainCafeController mainController;
+
+    public void setMainController(MainCafeController mainController) {
+        this.mainController = mainController;
+    }
+
+    /**
+     * Called by MainCafeController to populate the comboBox with current items.
+     */
+    public void initComboBox(List<String> items) {
+        itemComboBox.getItems().setAll(items);
     }
 
     @FXML
-    private void handleRemove(ActionEvent event) {
-        String selectedItem = itemComboBox.getValue();
-        System.out.println("Removing item: " + selectedItem);
-        // do logic...
-        closeWindow(event);
+    private void handleRemove() {
+        String selected = itemComboBox.getValue();
+        if (selected != null && mainController != null) {
+            mainController.removeItemFromMenu(selected);
+        }
+        close();
     }
 
     @FXML
-    private void handleCancel(ActionEvent event) {
-        closeWindow(event);
+    private void handleCancel() {
+        close();
     }
 
-    private void closeWindow(ActionEvent event) {
-        Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
+    private void close() {
+        Stage stage = (Stage) itemComboBox.getScene().getWindow();
         stage.close();
     }
 }

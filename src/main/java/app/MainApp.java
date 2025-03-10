@@ -13,7 +13,7 @@ import javafx.stage.Stage;
  */
 public class MainApp extends Application {
 
-    private static Stage primaryStage;  // We keep a static reference for convenience
+    private static Stage primaryStage;  // Static reference for convenience
 
     @Override
     public void start(Stage stage) {
@@ -27,6 +27,9 @@ public class MainApp extends Application {
     private void showLogin() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/client/ui/Login.fxml"));
+            if (loader.getLocation() == null) {
+                throw new IllegalStateException("FXML file not found: Login.fxml");
+            }
             Scene scene = new Scene(loader.load(), 600, 400);
             primaryStage.setTitle("Cafe - Login");
             primaryStage.setScene(scene);
@@ -44,6 +47,9 @@ public class MainApp extends Application {
     public static void showMainCafe() {
         try {
             FXMLLoader loader = new FXMLLoader(MainApp.class.getResource("/app/client/ui/MainCafe.fxml"));
+            if (loader.getLocation() == null) {
+                throw new IllegalStateException("FXML file not found: MainCafe.fxml");
+            }
             Scene scene = new Scene(loader.load(), 1000, 600);
             primaryStage.setTitle("Cafe Management");
             primaryStage.setScene(scene);
@@ -55,10 +61,6 @@ public class MainApp extends Application {
     }
 
     public static void main(String[] args) {
-        // If you want to start the server in the same process (optional):
-        // new Thread(new Server(34567)).start();
-        // Typically, you'd run ServerDriver in a separate process.
-
         launch(args); // Launches JavaFX
     }
 }

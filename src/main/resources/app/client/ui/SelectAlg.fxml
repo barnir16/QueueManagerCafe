@@ -3,14 +3,43 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="192.0" prefWidth="244.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="app.client.ui.SelectAlgController"
+            prefHeight="200.0" prefWidth="300.0"
+            style="-fx-background-color: #ecf0f1; -fx-padding: 10;">
    <children>
-      <CheckBox layoutX="17.0" layoutY="36.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="199.0" text="Time Based Algorithm" />
-      <CheckBox layoutX="17.0" layoutY="60.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="199.0" text="Batch Item Algorithm" />
-      <CheckBox layoutX="17.0" layoutY="84.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="199.0" text="Member Priority Algorithm" />
-      <CheckBox layoutX="17.0" layoutY="109.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="199.0" text="Item Weigth Algorithm" />
-      <Button layoutX="86.0" layoutY="149.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="68.0" text="OK" />
-      <Button layoutX="167.0" layoutY="149.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="68.0" text="Cancel" />
-      <Label layoutX="15.0" layoutY="11.0" prefHeight="17.0" prefWidth="223.0" text="Select Algorithm :" textAlignment="CENTER" />
+      <Label layoutX="10.0" layoutY="10.0"
+             text="Select Algorithm:"
+             style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+
+      <RadioButton fx:id="timeBasedRadio"
+                   layoutX="10.0" layoutY="50.0"
+                   text="Time Based Algorithm"
+                   selected="true" />
+
+      <RadioButton fx:id="batchRadio"
+                   layoutX="10.0" layoutY="80.0"
+                   text="Batch Item Algorithm" />
+
+      <RadioButton fx:id="memberPriorityRadio"
+                   layoutX="10.0" layoutY="110.0"
+                   text="Member Priority Algorithm" />
+
+      <RadioButton fx:id="itemWeightRadio"
+                   layoutX="10.0" layoutY="140.0"
+                   text="Item Weight Algorithm" />
+
+      <Button fx:id="okButton"
+              layoutX="130.0" layoutY="160.0"
+              text="OK"
+              onAction="#handleOk"
+              style="-fx-background-color: #2980b9; -fx-text-fill: white;" />
+
+      <Button fx:id="cancelButton"
+              layoutX="190.0" layoutY="160.0"
+              text="Cancel"
+              onAction="#handleCancel"
+              style="-fx-background-color: #95a5a6; -fx-text-fill: white;" />
    </children>
-</Pane>
+</AnchorPane>

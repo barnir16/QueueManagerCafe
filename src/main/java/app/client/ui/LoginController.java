@@ -1,12 +1,11 @@
 package app.client.ui;
 
-import app.MainApp;                 // <--- so we can call MainApp.showMainCafe()
+import app.MainApp;
 import app.client.Client;
 import app.server.service.Request;
 import app.server.service.Response;
 import com.google.gson.Gson;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -25,7 +24,6 @@ public class LoginController {
 
     @FXML
     private void handleLogin() {
-        // Prepare JSON request for "LOGIN"
         Map<String, String> headers = new HashMap<>();
         headers.put("action", "LOGIN");
 
@@ -33,33 +31,22 @@ public class LoginController {
         body.put("username", usernameField.getText());
         body.put("password", passwordField.getText());
 
-        // Convert to JSON
-        String jsonRequest = gson.toJson(new Request(headers, body));
+        String json = gson.toJson(new Request(headers, body));
+        String serverResponse = Client.sendJsonRequest(json);
+        System.out.println("Server response: " + serverResponse);
 
-        // Send to server
-        String serverResponseJson = Client.sendJsonRequest(jsonRequest);
-        System.out.println("Server response: " + serverResponseJson);
-
-        // If the server fails or returns something like "ERROR: ..."
-        if (serverResponseJson.startsWith("ERROR:")) {
-            responseLabel.setText("Login failed: " + serverResponseJson);
+        if (serverResponse.startsWith("ERROR:")) {
+            responseLabel.setText("Login failed: " + serverResponse);
             return;
         }
 
-        // Otherwise, parse the JSON into a Response
-        Response resp = gson.fromJson(serverResponseJson, Response.class);
-
-        // Suppose your server sets resp.getMessage() == "SUCCESS" for a correct login
+        Response resp = gson.fromJson(serverResponse, Response.class);
         if ("SUCCESS".equals(resp.getMessage())) {
             responseLabel.setText("Login successful!");
+            Stage stage = (Stage) responseLabel.getScene().getWindow();
+            stage.close();
 
-            // Close the login window
-            Stage loginStage = (Stage) responseLabel.getScene().getWindow();
-            loginStage.close();
-
-            // Switch to MainCafe
             MainApp.showMainCafe();
-
         } else {
             responseLabel.setText("Login failed: " + resp.getMessage());
         }
@@ -67,7 +54,6 @@ public class LoginController {
 
     @FXML
     private void handleRegister() {
-        // Prepare JSON request for "REGISTER"
         Map<String, String> headers = new HashMap<>();
         headers.put("action", "REGISTER");
 
@@ -75,17 +61,16 @@ public class LoginController {
         body.put("username", usernameField.getText());
         body.put("password", passwordField.getText());
 
-        String jsonRequest = gson.toJson(new Request(headers, body));
-        String serverResponseJson = Client.sendJsonRequest(jsonRequest);
-        System.out.println("Server response: " + serverResponseJson);
+        String json = gson.toJson(new Request(headers, body));
+        String serverResponse = Client.sendJsonRequest(json);
+        System.out.println("Server response: " + serverResponse);
 
-        if (serverResponseJson.startsWith("ERROR:")) {
-            responseLabel.setText("Registration failed: " + serverResponseJson);
+        if (serverResponse.startsWith("ERROR:")) {
+            responseLabel.setText("Registration failed: " + serverResponse);
             return;
         }
 
-        // Parse
-        Response resp = gson.fromJson(serverResponseJson, Response.class);
+        Response resp = gson.fromJson(serverResponse, Response.class);
         if ("REGISTERED".equals(resp.getMessage())) {
             responseLabel.setText("Registration successful!");
         } else {
