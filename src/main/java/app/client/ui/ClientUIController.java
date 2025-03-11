@@ -30,13 +30,13 @@ import java.util.*;
 public class ClientUIController {
 
     // ----------------------------------------------------------------
-    //  LOGIN-RELATED FIELDS (from your old ClientUIController)
+    //  LOGIN-RELATED FIELDS (if you want to use them)
     // ----------------------------------------------------------------
     @FXML private TextField usernameField;
     @FXML private TextField passwordField;
     @FXML private Label responseLabel;
 
-    // (Optional) If you want to handle "SaveUser" or "FindUser":
+    // Example placeholders if you want "SaveUser"/"FindUser"
     @FXML
     private void handleSaveUser() {
         System.out.println("Saving user with username="
@@ -47,38 +47,6 @@ public class ClientUIController {
     private void handleFindUser() {
         System.out.println("Finding user with username="
                 + (usernameField != null ? usernameField.getText() : "??"));
-    }
-
-    // ----------------------------------------------------------------
-    //  TIME-VALUES & TIME-WEIGHTS STORAGE (so user can set them anytime)
-    // ----------------------------------------------------------------
-    /**
-     * Stored "last known" thresholds for time-based algorithms:
-     * [0] = low threshold, [1] = mid threshold.
-     */
-    private int[] storedTimeThresholds = {5, 10};
-
-    /**
-     * Stored "last known" weights for time-based algorithms:
-     * [0] = low weight, [1] = mid weight, [2] = high weight.
-     */
-    private int[] storedTimeWeights = {1, 2, 3};
-
-    public int[] getStoredTimeThresholds() {
-        return storedTimeThresholds;
-    }
-    public void setStoredTimeThresholds(int low, int mid) {
-        storedTimeThresholds[0] = low;
-        storedTimeThresholds[1] = mid;
-    }
-
-    public int[] getStoredTimeWeights() {
-        return storedTimeWeights;
-    }
-    public void setStoredTimeWeights(int low, int mid, int high) {
-        storedTimeWeights[0] = low;
-        storedTimeWeights[1] = mid;
-        storedTimeWeights[2] = high;
     }
 
     // ----------------------------------------------------------------
@@ -108,12 +76,14 @@ public class ClientUIController {
     private int nextOrderId = 1;
     private boolean isDarkMode = false;
 
+    // ----------------------------------------------------------------
+    //  FXML Initialization
+    // ----------------------------------------------------------------
     @FXML
     public void initialize() {
         // Default algorithm: TimeBased
         currentAlg = new TimeBasedAlgorithm();
         cafeQueue = new OrderQueue(currentAlg);
-
         if (currentAlgorithmLabel != null) {
             currentAlgorithmLabel.setText("Current Algorithm: Time Based");
         }
@@ -131,6 +101,7 @@ public class ClientUIController {
         itemWeights.put("Espresso",   1);
         itemWeights.put("Sandwich",   3);
 
+        // Optional: run after UI loads
         Platform.runLater(() -> {
             // e.g. applyDarkMode(false);
         });
@@ -144,40 +115,26 @@ public class ClientUIController {
         switch (algName) {
             case "Batch Item":
                 BatchItemAlgorithm bia = new BatchItemAlgorithm();
-                // Example defaults for batch vs. individual
+                // Example defaults
                 bia.setWeights(3, 1);
-                // Also apply stored time-thresholds/weights if you want
-                bia.setTimeThresholds(storedTimeThresholds[0], storedTimeThresholds[1]);
-                bia.setWeights(storedTimeWeights[0], storedTimeWeights[1], storedTimeWeights[2]);
                 newAlg = bia;
                 break;
-
             case "Member Priority":
-                MemberPriorityAlgorithm mpa = new MemberPriorityAlgorithm();
-                // Also apply stored thresholds/weights
-                mpa.setTimeThresholds(storedTimeThresholds[0], storedTimeThresholds[1]);
-                mpa.setWeights(storedTimeWeights[0], storedTimeWeights[1], storedTimeWeights[2]);
-                newAlg = mpa;
+                newAlg = new MemberPriorityAlgorithm();
                 break;
-
             case "Item Weight":
                 ItemWeightAlgorithm iwa = new ItemWeightAlgorithm();
-                // Example: set item weights for the JAR side
+                // Let the JAR see the same default item weights
                 iwa.setItemWeight("Cappuccino", 2);
                 iwa.setItemWeight("Espresso",   1);
                 iwa.setItemWeight("Sandwich",   3);
-                // (If your ItemWeightAlgorithm also extends TimeWeightedAlgorithm,
-                //  you can do iwa.setTimeThresholds(...) / iwa.setWeights(...) too)
                 newAlg = iwa;
                 break;
-
             case "Time Based":
             default:
-                TimeBasedAlgorithm tba = new TimeBasedAlgorithm();
-                newAlg = tba;
+                newAlg = new TimeBasedAlgorithm();
                 break;
         }
-
         currentAlg = newAlg;
         cafeQueue.setAlgorithm(newAlg);
 
@@ -219,9 +176,9 @@ public class ClientUIController {
     private void refreshCartView() {
         if (cartView == null) return;
         cartView.getItems().clear();
-        for (Map.Entry<String, Integer> e : cartMap.entrySet()) {
-            cartView.getItems().add(e.getKey() + " x" + e.getValue());
-        }
+        cartMap.forEach((name, qty) ->
+                cartView.getItems().add(name + " x" + qty)
+        );
     }
 
     // ----------------------------------------------------------------
@@ -234,6 +191,7 @@ public class ClientUIController {
         }
         itemWeights.put(name, weight);
 
+        // We replicate the same "label line + button line" pattern
         Label lbl = new Label(name);
         lbl.setStyle("-fx-text-fill: #ecf0f1;");
 
@@ -253,9 +211,10 @@ public class ClientUIController {
             System.err.println("menuBox is null - can't add item UI");
             return;
         }
-        // Insert near the bottom, above the last 3 big buttons
         int insertIndex = Math.max(0, menuBox.getChildren().size() - 3);
+        // Add label
         menuBox.getChildren().add(insertIndex, lbl);
+        // Add the HBox
         menuBox.getChildren().add(insertIndex + 1, buttonRow);
 
         System.out.println("Added item: " + name + " weight=" + weight);
@@ -276,7 +235,7 @@ public class ClientUIController {
                 if (lbl.getText().equals(name)) {
                     // remove label
                     children.remove(i);
-                    // remove next node if it's an HBox
+                    // remove next node if HBox
                     if (i < children.size() && (children.get(i) instanceof HBox)) {
                         children.remove(i);
                     }
@@ -354,12 +313,12 @@ public class ClientUIController {
             }
 
             SetTimeValuesController ctrl = loader.getController();
-            // Now references THIS controller (ClientUIController)
+            // Now references "ClientUIController" not "MainCafeController"
             ctrl.setMainController(this);
 
-            // Show the "stored" thresholds, even if not TWA
-            int[] stored = getStoredTimeThresholds();
-            ctrl.initValues(stored);
+            if (currentAlg instanceof TimeWeightedAlgorithm twa) {
+                ctrl.initValues(twa.getTimeThresholds());
+            }
 
             Stage dialog = new Stage();
             dialog.setTitle("Set Time Values");
@@ -382,9 +341,9 @@ public class ClientUIController {
             SetTimeWeightsController ctrl = loader.getController();
             ctrl.setMainController(this);
 
-            // Show the "stored" weights
-            int[] w = getStoredTimeWeights();
-            ctrl.initWeights(w);
+            if (currentAlg instanceof TimeWeightedAlgorithm twa) {
+                ctrl.initWeights(twa.getWeights());
+            }
 
             Stage dialog = new Stage();
             dialog.setTitle("Set Time Weights");
@@ -411,8 +370,8 @@ public class ClientUIController {
             dialog.setTitle("Select Algorithm");
             dialog.setScene(scene);
             dialog.show();
-        } catch (IOException ex) {
-            System.err.println("Failed to load FXML: " + ex.getMessage());
+        } catch (IOException e) {
+            showError("Failed to open SelectAlg.fxml\n" + e.getMessage());
         }
     }
 
@@ -496,6 +455,7 @@ public class ClientUIController {
             System.err.println("dark-mode.css not found!");
             return;
         }
+        // Avoid potential NPE warning:
         String darkPath = darkCss.toExternalForm();
 
         if (enable) {
@@ -523,6 +483,7 @@ public class ClientUIController {
         alert.showAndWait();
     }
 
+    // For other controllers to query the current algorithm
     public IQueueAlgorithm getCurrentAlgorithm() {
         return currentAlg;
     }

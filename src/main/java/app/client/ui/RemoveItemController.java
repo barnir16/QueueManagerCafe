@@ -1,7 +1,6 @@
 package app.client.ui;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
 
@@ -10,14 +9,12 @@ import java.util.List;
 public class RemoveItemController {
 
     @FXML private ComboBox<String> itemComboBox;
-    @FXML private Button removeButton;
-    @FXML private Button cancelButton;
 
-    // REPLACED: private MainCafeController mainController;
+    // No Button fields needed if we only have onAction in FXML
     private ClientUIController mainController;
 
-    public void setMainController(ClientUIController mc) {
-        this.mainController = mc;
+    public void setMainController(ClientUIController mainController) {
+        this.mainController = mainController;
     }
 
     public void initComboBox(List<String> items) {
@@ -39,7 +36,7 @@ public class RemoveItemController {
     }
 
     private void close() {
-        Stage st = (Stage) itemComboBox.getScene().getWindow();
-        st.close();
+        Stage stage = (Stage) itemComboBox.getScene().getWindow();
+        stage.close();
     }
 }

@@ -21,14 +21,13 @@
                    layoutX="10.0" layoutY="75.0"
                    promptText="Mid threshold" />
 
-        <Button fx:id="saveButton"
-                layoutX="10.0" layoutY="110.0"
+        <!-- No fx:id if not used -->
+        <Button layoutX="10.0" layoutY="110.0"
                 text="Save"
                 onAction="#handleSave"
                 style="-fx-background-color: #2980b9; -fx-text-fill: white;" />
 
-        <Button fx:id="cancelButton"
-                layoutX="80.0" layoutY="110.0"
+        <Button layoutX="80.0" layoutY="110.0"
                 text="Cancel"
                 onAction="#handleCancel"
                 style="-fx-background-color: #95a5a6; -fx-text-fill: white;" />

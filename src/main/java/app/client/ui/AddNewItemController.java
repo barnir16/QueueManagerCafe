@@ -4,16 +4,19 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+/**
+ * Dialog to add a new item (name + weight) to the menu.
+ */
 public class AddNewItemController {
 
     @FXML private TextField itemNameField;
     @FXML private TextField itemWeightField;
 
-    // REPLACED: private MainCafeController mainController;
+    // Now references ClientUIController
     private ClientUIController mainController;
 
-    public void setMainController(ClientUIController mc) {
-        this.mainController = mc;
+    public void setMainController(ClientUIController mainController) {
+        this.mainController = mainController;
     }
 
     @FXML

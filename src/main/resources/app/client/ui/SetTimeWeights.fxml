@@ -7,7 +7,6 @@
             fx:controller="app.client.ui.SetTimeWeightsController"
             prefHeight="200.0" prefWidth="250.0"
             style="-fx-background-color: #ecf0f1; -fx-padding: 10;">
-
     <children>
         <Label layoutX="10.0" layoutY="10.0"
                text="Set Time Weights"
@@ -25,14 +24,13 @@
                    layoutX="10.0" layoutY="120.0"
                    promptText="High" />
 
-        <Button fx:id="okButton"
-                layoutX="10.0" layoutY="160.0"
+        <!-- No fx:id if not used -->
+        <Button layoutX="10.0" layoutY="160.0"
                 text="OK"
                 onAction="#handleOk"
                 style="-fx-background-color: #2980b9; -fx-text-fill: white;" />
 
-        <Button fx:id="cancelButton"
-                layoutX="80.0" layoutY="160.0"
+        <Button layoutX="80.0" layoutY="160.0"
                 text="Cancel"
                 onAction="#handleCancel"
                 style="-fx-background-color: #95a5a6; -fx-text-fill: white;" />

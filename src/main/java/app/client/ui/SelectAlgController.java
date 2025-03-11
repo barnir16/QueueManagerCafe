@@ -1,14 +1,13 @@
 package app.client.ui;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 
 /**
- * Lets the user pick one of four algorithms:
- * Time Based, Batch Item, Member Priority, or Item Weight.
+ * Lets the user pick one of four algorithms: Time Based, Batch Item,
+ * Member Priority, or Item Weight.
  */
 public class SelectAlgController {
 
@@ -16,33 +15,29 @@ public class SelectAlgController {
     @FXML private RadioButton batchRadio;
     @FXML private RadioButton memberPriorityRadio;
     @FXML private RadioButton itemWeightRadio;
-    @FXML private Button okButton;
-    @FXML private Button cancelButton;
 
-    // REPLACED: private MainCafeController mainController;
+    // We don't need private Button fields if we only do onAction in FXML
     private ClientUIController mainController;
 
-    public void setMainController(ClientUIController mc) {
-        this.mainController = mc;
-    }
-
     @FXML
-    private void initialize() {
-        // Ensure only one radio is selected
+    public void initialize() {
+        // Force single selection
         ToggleGroup group = new ToggleGroup();
         timeBasedRadio.setToggleGroup(group);
         batchRadio.setToggleGroup(group);
         memberPriorityRadio.setToggleGroup(group);
         itemWeightRadio.setToggleGroup(group);
 
-        // Optionally set a default
         timeBasedRadio.setSelected(true);
+    }
+
+    public void setMainController(ClientUIController mainController) {
+        this.mainController = mainController;
     }
 
     @FXML
     private void handleOk() {
-        String chosenAlg = "Time Based"; // default
-
+        String chosenAlg = "Time Based";
         if (timeBasedRadio.isSelected()) {
             chosenAlg = "Time Based";
         } else if (batchRadio.isSelected()) {
@@ -65,7 +60,7 @@ public class SelectAlgController {
     }
 
     private void closeDialog() {
-        Stage st = (Stage) timeBasedRadio.getScene().getWindow();
-        st.close();
+        Stage stage = (Stage) timeBasedRadio.getScene().getWindow();
+        stage.close();
     }
 }

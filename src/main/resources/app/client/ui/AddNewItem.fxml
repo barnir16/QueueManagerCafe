@@ -24,13 +24,12 @@
                  promptText="Item Weight"
                  prefWidth="200.0" />
 
-      <Button fx:id="addButton"
-              layoutX="10.0" layoutY="130.0"
+      <!-- Remove fx:id if not needed -->
+      <Button layoutX="10.0" layoutY="130.0"
               text="Add"
               onAction="#handleAdd" />
 
-      <Button fx:id="closeButton"
-              layoutX="130.0" layoutY="130.0"
+      <Button layoutX="130.0" layoutY="130.0"
               text="Close"
               onAction="#handleClose" />
    </children>

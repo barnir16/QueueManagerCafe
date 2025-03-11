@@ -22,13 +22,13 @@
       <RadioButton fx:id="itemWeightRadio"
                    layoutX="10.0" layoutY="115.0"
                    text="Item Weight" />
-      <Button fx:id="okButton"
-              layoutX="60.0" layoutY="145.0"
+
+      <!-- No fx:id if not used -->
+      <Button layoutX="60.0" layoutY="145.0"
               text="OK"
               onAction="#handleOk"
               style="-fx-background-color: #2980b9; -fx-text-fill: white;" />
-      <Button fx:id="cancelButton"
-              layoutX="120.0" layoutY="145.0"
+      <Button layoutX="120.0" layoutY="145.0"
               text="Cancel"
               onAction="#handleCancel"
               style="-fx-background-color: #e74c3c; -fx-text-fill: white;" />

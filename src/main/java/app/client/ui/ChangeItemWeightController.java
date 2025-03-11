@@ -1,7 +1,6 @@
 package app.client.ui;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -12,14 +11,12 @@ public class ChangeItemWeightController {
 
     @FXML private ComboBox<String> itemCombo;
     @FXML private TextField weightField;
-    @FXML private Button applyButton;
-    @FXML private Button cancelButton;
 
-    // REPLACED: private MainCafeController mainController;
+    // No Button fields if we just do onAction in FXML
     private ClientUIController mainController;
 
-    public void setMainController(ClientUIController mc) {
-        this.mainController = mc;
+    public void setMainController(ClientUIController mainController) {
+        this.mainController = mainController;
     }
 
     public void initItems(List<String> items) {
@@ -38,7 +35,7 @@ public class ChangeItemWeightController {
     private void handleApply() {
         String sel = itemCombo.getValue();
         if (sel == null || sel.isEmpty()) {
-            System.out.println("No item selected");
+            System.out.println("No item selected.");
             return;
         }
         try {

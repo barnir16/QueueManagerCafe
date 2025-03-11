@@ -2,34 +2,26 @@ package app.client.ui;
 
 import algorithm.TimeWeightedAlgorithm;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 /**
- * Controller for SetTimeValues.fxml
- * Allows the user to see/edit the "low" and "mid" thresholds
- * used by TimeWeightedAlgorithm (or subclass).
+ * Allows user to see/edit "low" and "mid" thresholds in TimeWeightedAlgorithm.
  */
 public class SetTimeValuesController {
 
     @FXML private TextField timeLowField;
     @FXML private TextField timeMidField;
-    @FXML private Button saveButton;
-    @FXML private Button cancelButton;
 
-    // REPLACED: private MainCafeController mainController;
+    // No Button fields needed if we just have onAction in FXML
     private ClientUIController mainController;
 
-    public void setMainController(ClientUIController mc) {
-        this.mainController = mc;
+    public void setMainController(ClientUIController mainController) {
+        this.mainController = mainController;
     }
 
-    /**
-     * Called by ClientUIController to initialize the text fields
-     * with the current thresholds (e.g. [5, 10]).
-     */
     public void initValues(int[] thresholds) {
+        // thresholds[0] = low, thresholds[1] = mid
         timeLowField.setText(String.valueOf(thresholds[0]));
         timeMidField.setText(String.valueOf(thresholds[1]));
     }
@@ -40,22 +32,15 @@ public class SetTimeValuesController {
             close();
             return;
         }
-        try {
-            int low = Integer.parseInt(timeLowField.getText().trim());
-            int mid = Integer.parseInt(timeMidField.getText().trim());
-
-            // 1) Store them in the controller's "storedTimeThresholds"
-            mainController.setStoredTimeThresholds(low, mid);
-
-            // 2) If current algorithm is TWA, apply them
-            if (mainController.getCurrentAlgorithm() instanceof TimeWeightedAlgorithm twa) {
+        if (mainController.getCurrentAlgorithm() instanceof TimeWeightedAlgorithm twa) {
+            try {
+                int low = Integer.parseInt(timeLowField.getText().trim());
+                int mid = Integer.parseInt(timeMidField.getText().trim());
                 twa.setTimeThresholds(low, mid);
-                System.out.println("Updated TWA thresholds to: low=" + low + ", mid=" + mid);
-            } else {
-                System.out.println("No TWA active, stored thresholds for later use.");
+                System.out.println("Updated time thresholds: low=" + low + ", mid=" + mid);
+            } catch (Exception e) {
+                System.err.println("Invalid time thresholds: " + e.getMessage());
             }
-        } catch (NumberFormatException e) {
-            System.err.println("Invalid time thresholds: " + e.getMessage());
         }
         close();
     }
@@ -66,7 +51,7 @@ public class SetTimeValuesController {
     }
 
     private void close() {
-        Stage st = (Stage) timeLowField.getScene().getWindow();
-        st.close();
+        Stage stage = (Stage) timeLowField.getScene().getWindow();
+        stage.close();
     }
 }
