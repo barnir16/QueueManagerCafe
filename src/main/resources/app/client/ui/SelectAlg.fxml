@@ -3,34 +3,45 @@
 <?import javafx.scene.layout.*?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml/1"
+            xmlns:fx="http://javafx.com/fxml"
             fx:controller="app.client.ui.SelectAlgController"
+            fx:id="rootPane"
             prefWidth="250.0" prefHeight="180.0"
-            style="-fx-background-color: #ecf0f1; -fx-padding: 10;">
+            styleClass="root-pane">
+
    <children>
       <Label layoutX="10.0" layoutY="10.0"
-             text="Select Algorithm:" />
+             text="Select Algorithm:"
+             styleClass="label" />
+
       <RadioButton fx:id="timeBasedRadio"
                    layoutX="10.0" layoutY="40.0"
-                   text="Time Based" selected="true" />
+                   text="Time Based" selected="true"
+                   styleClass="check-box" />
+
       <RadioButton fx:id="batchRadio"
                    layoutX="10.0" layoutY="65.0"
-                   text="Batch Item" />
+                   text="Batch Item"
+                   styleClass="check-box" />
+
       <RadioButton fx:id="memberPriorityRadio"
                    layoutX="10.0" layoutY="90.0"
-                   text="Member Priority" />
+                   text="Member Priority"
+                   styleClass="check-box" />
+
       <RadioButton fx:id="itemWeightRadio"
                    layoutX="10.0" layoutY="115.0"
-                   text="Item Weight" />
+                   text="Item Weight"
+                   styleClass="check-box" />
 
-      <!-- No fx:id if not used -->
       <Button layoutX="60.0" layoutY="145.0"
               text="OK"
-              onAction="#handleOk"
-              style="-fx-background-color: #2980b9; -fx-text-fill: white;" />
+              styleClass="button"
+              onAction="#handleOk" />
+
       <Button layoutX="120.0" layoutY="145.0"
               text="Cancel"
-              onAction="#handleCancel"
-              style="-fx-background-color: #e74c3c; -fx-text-fill: white;" />
+              styleClass="button"
+              onAction="#handleCancel" />
    </children>
 </AnchorPane>

@@ -3,15 +3,17 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml/1"
+            xmlns:fx="http://javafx.com/fxml"
             fx:controller="app.client.ui.SetTimeValuesController"
+            fx:id="rootPane"
             prefHeight="140.0" prefWidth="250.0"
-            style="-fx-background-color: #ecf0f1; -fx-padding: 10;">
+            styleClass="root-pane">
 
     <children>
         <Label layoutX="10.0" layoutY="10.0"
                text="Set Time Thresholds (minutes):"
-               style="-fx-font-size: 14px;" />
+               styleClass="label"
+               style="-fx-font-size: 14;" />
 
         <TextField fx:id="timeLowField"
                    layoutX="10.0" layoutY="40.0"
@@ -21,15 +23,14 @@
                    layoutX="10.0" layoutY="75.0"
                    promptText="Mid threshold" />
 
-        <!-- No fx:id if not used -->
         <Button layoutX="10.0" layoutY="110.0"
                 text="Save"
-                onAction="#handleSave"
-                style="-fx-background-color: #2980b9; -fx-text-fill: white;" />
+                styleClass="button"
+                onAction="#handleSave" />
 
         <Button layoutX="80.0" layoutY="110.0"
                 text="Cancel"
-                onAction="#handleCancel"
-                style="-fx-background-color: #95a5a6; -fx-text-fill: white;" />
+                styleClass="button"
+                onAction="#handleCancel" />
     </children>
 </AnchorPane>

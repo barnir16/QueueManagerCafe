@@ -3,14 +3,17 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml/1"
+            xmlns:fx="http://javafx.com/fxml"
             fx:controller="app.client.ui.ChangeItemWeightController"
+            fx:id="rootPane"
             prefHeight="200.0" prefWidth="250.0"
-            style="-fx-background-color: #ecf0f1; -fx-padding: 10;">
+            styleClass="root-pane">
+
     <children>
         <Label layoutX="10.0" layoutY="10.0"
                text="Change Item Weight"
-               style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+               styleClass="label"
+               style="-fx-font-size: 16; -fx-font-weight: bold;" />
 
         <ComboBox fx:id="itemCombo"
                   layoutX="10.0" layoutY="50.0"
@@ -21,15 +24,14 @@
                    promptText="New Weight"
                    prefWidth="200.0" />
 
-        <!-- No fx:id if not used -->
         <Button layoutX="10.0" layoutY="140.0"
                 text="Apply"
-                onAction="#handleApply"
-                style="-fx-background-color: #2980b9; -fx-text-fill: white;" />
+                styleClass="button"
+                onAction="#handleApply" />
 
         <Button layoutX="130.0" layoutY="140.0"
                 text="Cancel"
-                onAction="#handleCancel"
-                style="-fx-background-color: #95a5a6; -fx-text-fill: white;" />
+                styleClass="button"
+                onAction="#handleCancel" />
     </children>
 </AnchorPane>

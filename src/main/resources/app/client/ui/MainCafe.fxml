@@ -1,122 +1,126 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Orientation?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml/1"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:id="rootPane"
             fx:controller="app.client.ui.ClientUIController"
-            prefWidth="1000" prefHeight="600"
-            style="-fx-background-color: #ecf0f1;">
+            prefWidth="1000.0" prefHeight="600.0"
+            styleClass="root-pane">
 
+    <!-- TOP: Title Label -->
     <top>
         <Label fx:id="currentAlgorithmLabel"
                text="Current Algorithm: Time Based"
-               style="-fx-font-size: 18; -fx-padding: 10; -fx-text-fill: #2c3e50;" />
+               styleClass="label"
+               style="-fx-font-size: 18; -fx-padding: 10;"
+               BorderPane.alignment="CENTER" />
     </top>
 
+    <!-- LEFT: Vertical menu for items + membership + order buttons -->
     <left>
         <VBox fx:id="menuBox"
-              spacing="15"
-              style="-fx-background-color: #2c3e50; -fx-padding: 10;">
+              spacing="10"
+              styleClass="left-pane"
+              BorderPane.alignment="TOP_LEFT">
 
             <Label text="Main Menu"
-                   style="-fx-font-size: 20px; -fx-text-fill: #ecf0f1;" />
+                   styleClass="label"
+                   style="-fx-font-size: 20;" />
 
-            <!-- Default item: Cappuccino -->
-            <Label text="Cappuccino" style="-fx-text-fill: #ecf0f1;" />
-            <HBox spacing="10">
-                <Button text="+" style="-fx-background-color: #27ae60; -fx-text-fill: white;"
-                        onAction="#handleItemPlus">
-                    <userData>Cappuccino</userData>
-                </Button>
-                <Button text="-" style="-fx-background-color: #c0392b; -fx-text-fill: white;"
-                        onAction="#handleItemMinus">
-                    <userData>Cappuccino</userData>
-                </Button>
-            </HBox>
+            <!-- Default items container -->
+            <VBox spacing="5">
+                <!-- Cappuccino -->
+                <Label text="Cappuccino" styleClass="label" />
+                <HBox spacing="10">
+                    <Button text="+" styleClass="button" onAction="#handleItemPlus">
+                        <userData>Cappuccino</userData>
+                    </Button>
+                    <Button text="-" styleClass="button" onAction="#handleItemMinus">
+                        <userData>Cappuccino</userData>
+                    </Button>
+                </HBox>
 
-            <!-- Default item: Espresso -->
-            <Label text="Espresso" style="-fx-text-fill: #ecf0f1;" />
-            <HBox spacing="10">
-                <Button text="+" style="-fx-background-color: #27ae60; -fx-text-fill: white;"
-                        onAction="#handleItemPlus">
-                    <userData>Espresso</userData>
-                </Button>
-                <Button text="-" style="-fx-background-color: #c0392b; -fx-text-fill: white;"
-                        onAction="#handleItemMinus">
-                    <userData>Espresso</userData>
-                </Button>
-            </HBox>
+                <!-- Espresso -->
+                <Label text="Espresso" styleClass="label" />
+                <HBox spacing="10">
+                    <Button text="+" styleClass="button" onAction="#handleItemPlus">
+                        <userData>Espresso</userData>
+                    </Button>
+                    <Button text="-" styleClass="button" onAction="#handleItemMinus">
+                        <userData>Espresso</userData>
+                    </Button>
+                </HBox>
 
-            <!-- Default item: Sandwich -->
-            <Label text="Sandwich" style="-fx-text-fill: #ecf0f1;" />
-            <HBox spacing="10">
-                <Button text="+" style="-fx-background-color: #27ae60; -fx-text-fill: white;"
-                        onAction="#handleItemPlus">
-                    <userData>Sandwich</userData>
-                </Button>
-                <Button text="-" style="-fx-background-color: #c0392b; -fx-text-fill: white;"
-                        onAction="#handleItemMinus">
-                    <userData>Sandwich</userData>
-                </Button>
-            </HBox>
-
-            <!-- "Member?" checkbox -->
-            <CheckBox fx:id="memberCheckBox"
-                      text="Member?"
-                      style="-fx-text-fill: #ecf0f1;" />
-
-            <!-- Place/Process/Clear in left panel -->
-            <VBox spacing="10">
-                <Button text="Place Order"     onAction="#handlePlaceOrder" />
-                <Button text="Process Order"   onAction="#handleProcessOrder" />
-                <Button text="Clear Processed" onAction="#handleClearProcessed" />
+                <!-- Sandwich -->
+                <Label text="Sandwich" styleClass="label" />
+                <HBox spacing="10">
+                    <Button text="+" styleClass="button" onAction="#handleItemPlus">
+                        <userData>Sandwich</userData>
+                    </Button>
+                    <Button text="-" styleClass="button" onAction="#handleItemMinus">
+                        <userData>Sandwich</userData>
+                    </Button>
+                </HBox>
             </VBox>
 
+            <!-- Spacer to push next section to bottom of VBox -->
+            <Pane fx:id="spacer" VBox.vgrow="ALWAYS" />
+
+            <!-- Sub-VBox at bottom for membership + place/process/clear -->
+            <VBox spacing="10">
+                <CheckBox fx:id="memberCheckBox" text="Member?" styleClass="check-box" />
+                <Button text="Place Order"     styleClass="button" onAction="#handlePlaceOrder" />
+                <Button text="Process Order"   styleClass="button" onAction="#handleProcessOrder" />
+                <Button text="Clear Processed" styleClass="button" onAction="#handleClearProcessed" />
+            </VBox>
         </VBox>
     </left>
 
+    <!-- CENTER: A vertical SplitPane with 3 ListViews -->
     <center>
-        <SplitPane orientation="VERTICAL" dividerPositions="0.33, 0.66" style="-fx-padding: 10;">
+        <SplitPane orientation="VERTICAL" styleClass="center-pane" style="-fx-padding: 10;">
             <items>
-                <ListView fx:id="cartView">
+                <ListView fx:id="cartView" styleClass="list-view">
                     <placeholder>
-                        <Label text="Your cart is empty" />
+                        <Label text="Your cart is empty" styleClass="label"/>
                     </placeholder>
                 </ListView>
 
-                <ListView fx:id="queueView">
+                <ListView fx:id="queueView" styleClass="list-view">
                     <placeholder>
-                        <Label text="Queue is empty" />
+                        <Label text="Queue is empty" styleClass="label"/>
                     </placeholder>
                 </ListView>
 
-                <ListView fx:id="processedOrdersView">
+                <ListView fx:id="processedOrdersView" styleClass="list-view">
                     <placeholder>
-                        <Label text="No processed orders yet" />
+                        <Label text="No processed orders yet" styleClass="label"/>
                     </placeholder>
                 </ListView>
             </items>
         </SplitPane>
     </center>
 
+    <!-- BOTTOM: The config buttons row -->
     <bottom>
-        <HBox spacing="10" style="-fx-padding: 10;">
-            <!-- The "big" item mgmt & config buttons -->
-            <Button text="Add New Item"         onAction="#handleOpenAddItem" />
-            <Button text="Remove Item"          onAction="#handleRemoveItem" />
-            <Button text="Change Item Weight"   onAction="#handleOpenChangeWeight" />
+        <HBox spacing="10" styleClass="bottom-pane" style="-fx-padding: 10;"
+              BorderPane.alignment="CENTER">
+            <Button text="Add New Item"       styleClass="button" onAction="#handleOpenAddItem" />
+            <Button text="Remove Item"        styleClass="button" onAction="#handleRemoveItem" />
+            <Button text="Change Item Weight" styleClass="button" onAction="#handleOpenChangeWeight" />
 
-            <Button text="Toggle Theme"         onAction="#handleToggleTheme" />
-            <Button text="Set Time Values"      onAction="#handleTimeValues" />
-            <Button text="Set Time Weights"     onAction="#handleTimeWeights" />
-            <Button text="Switch Algorithm"     onAction="#handleSelectAlgorithm" />
+            <Button text="Toggle Theme"       styleClass="button" onAction="#handleToggleTheme" />
+            <Button text="Set Time Values"    styleClass="button" onAction="#handleTimeValues" />
+            <Button text="Set Time Weights"   styleClass="button" onAction="#handleTimeWeights" />
+            <Button text="Switch Algorithm"   styleClass="button" onAction="#handleSelectAlgorithm" />
         </HBox>
     </bottom>
 </BorderPane>

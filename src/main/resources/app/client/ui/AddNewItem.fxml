@@ -5,14 +5,17 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml/1"
+            xmlns:fx="http://javafx.com/fxml"
             fx:controller="app.client.ui.AddNewItemController"
+            fx:id="rootPane"
             prefHeight="200.0" prefWidth="250.0"
-            style="-fx-background-color: #ecf0f1; -fx-padding: 10;">
+            styleClass="root-pane">
+
    <children>
       <Label layoutX="10.0" layoutY="10.0"
              text="Enter new item details:"
-             style="-fx-font-size: 14px; -fx-text-fill: #2c3e50;" />
+             styleClass="label"
+             style="-fx-font-size: 14;" />
 
       <TextField fx:id="itemNameField"
                  layoutX="10.0" layoutY="50.0"
@@ -24,13 +27,14 @@
                  promptText="Item Weight"
                  prefWidth="200.0" />
 
-      <!-- Remove fx:id if not needed -->
       <Button layoutX="10.0" layoutY="130.0"
               text="Add"
+              styleClass="button"
               onAction="#handleAdd" />
 
       <Button layoutX="130.0" layoutY="130.0"
               text="Close"
+              styleClass="button"
               onAction="#handleClose" />
    </children>
 </AnchorPane>

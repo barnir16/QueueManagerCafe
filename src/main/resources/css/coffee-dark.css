@@ -1,0 +1,40 @@
+/* Dark coffee background for the root BorderPane */
+.root-pane {
+    -fx-background-color: #3C2A21;
+}
+
+/* Left pane even darker to differentiate */
+.left-pane {
+    -fx-background-color: #2B1B0E;
+}
+
+/* Center pane with a medium-dark color */
+.center-pane {
+    -fx-background-color: #4C3A2B;
+}
+
+/* The bottom row if you want a separate color, or let root-pane show */
+.bottom-pane {
+    -fx-background-color: #3C2A21; /* or #2B1B0E, test it out */
+}
+
+/* Lighter text on dark background */
+.label {
+    -fx-text-fill: #F5F0EA;
+}
+
+/* Buttons with a dark coffee background, light text */
+.button {
+    -fx-background-color: #5F4B3A;
+    -fx-text-fill: #F5F0EA;
+}
+
+.check-box {
+    -fx-text-fill: #F5F0EA;
+}
+
+.list-view {
+    -fx-background-color: #5F4B3A;
+    -fx-control-inner-background: #5F4B3A;
+    -fx-text-fill: #F5F0EA;
+}

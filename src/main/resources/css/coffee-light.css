@@ -1,0 +1,43 @@
+/* Applies to the entire main BorderPane */
+.root-pane {
+    -fx-background-color: #ECE4DB; /* light coffee background */
+}
+
+/* Left menu area */
+.left-pane {
+    -fx-background-color: #C8B6A6; /* slightly darker coffee for the left pane */
+}
+
+/* The center SplitPane area */
+.center-pane {
+    -fx-background-color: #F5F3F0; /* or #ECE4DB, tweak as desired */
+}
+
+/* The bottom row of config buttons */
+.bottom-pane {
+    /* Not strictly required, you can let root-pane color show through */
+    /* -fx-background-color: #DDD3C4; */
+}
+
+/* Label text color */
+.label {
+    -fx-text-fill: #3C2A21;
+}
+
+/* Button background & text color */
+.button {
+    -fx-background-color: #d6cfc7;
+    -fx-text-fill: #3C2A21;
+}
+
+/* CheckBox text color */
+.check-box {
+    -fx-text-fill: #3C2A21;
+}
+
+/* ListView background */
+.list-view {
+    -fx-background-color: #FDFCFB;
+    -fx-control-inner-background: #FDFCFB; /* for its inside area */
+    -fx-text-fill: #3C2A21;
+}

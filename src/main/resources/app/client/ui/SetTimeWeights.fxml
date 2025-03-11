@@ -3,14 +3,17 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml/1"
+            xmlns:fx="http://javafx.com/fxml"
             fx:controller="app.client.ui.SetTimeWeightsController"
+            fx:id="rootPane"
             prefHeight="200.0" prefWidth="250.0"
-            style="-fx-background-color: #ecf0f1; -fx-padding: 10;">
+            styleClass="root-pane">
+
     <children>
         <Label layoutX="10.0" layoutY="10.0"
                text="Set Time Weights"
-               style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+               styleClass="label"
+               style="-fx-font-size: 14; -fx-font-weight: bold;" />
 
         <TextField fx:id="lowField"
                    layoutX="10.0" layoutY="50.0"
@@ -24,15 +27,14 @@
                    layoutX="10.0" layoutY="120.0"
                    promptText="High" />
 
-        <!-- No fx:id if not used -->
         <Button layoutX="10.0" layoutY="160.0"
                 text="OK"
-                onAction="#handleOk"
-                style="-fx-background-color: #2980b9; -fx-text-fill: white;" />
+                styleClass="button"
+                onAction="#handleOk" />
 
         <Button layoutX="80.0" layoutY="160.0"
                 text="Cancel"
-                onAction="#handleCancel"
-                style="-fx-background-color: #95a5a6; -fx-text-fill: white;" />
+                styleClass="button"
+                onAction="#handleCancel" />
     </children>
 </AnchorPane>
