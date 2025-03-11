@@ -72,11 +72,11 @@
                       text="Member?"
                       style="-fx-text-fill: #ecf0f1;" />
 
-            <!-- Place/Process/Clear in left panel, default style -->
+            <!-- Place/Process/Clear in left panel -->
             <VBox spacing="10">
-                <Button text="Place Order"      onAction="#handlePlaceOrder" />
-                <Button text="Process Order"    onAction="#handleProcessOrder" />
-                <Button text="Clear Processed"  onAction="#handleClearProcessed" />
+                <Button text="Place Order"     onAction="#handlePlaceOrder" />
+                <Button text="Process Order"   onAction="#handleProcessOrder" />
+                <Button text="Clear Processed" onAction="#handleClearProcessed" />
             </VBox>
 
         </VBox>
@@ -108,7 +108,7 @@
 
     <bottom>
         <HBox spacing="10" style="-fx-padding: 10;">
-            <!-- The "big" item mgmt & config buttons, default styling -->
+            <!-- The "big" item mgmt & config buttons -->
             <Button text="Add New Item"         onAction="#handleOpenAddItem" />
             <Button text="Remove Item"          onAction="#handleRemoveItem" />
             <Button text="Change Item Weight"   onAction="#handleOpenChangeWeight" />

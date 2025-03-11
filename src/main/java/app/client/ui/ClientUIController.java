@@ -1,75 +1,149 @@
 package app.client.ui;
 
-import algorithm.*;
-import model.Order;
-import queue.IQueueAlgorithm;
-import queue.OrderQueue;
-
+import app.MainApp;
+import app.client.Client;
+import app.server.service.Request;
+import app.server.service.Response;
+import algorithm.BatchItemAlgorithm;
+import algorithm.ItemWeightAlgorithm;
+import algorithm.MemberPriorityAlgorithm;
+import algorithm.TimeBasedAlgorithm;
+import algorithm.TimeWeightedAlgorithm;
+import com.google.gson.Gson;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import model.Order;
+import queue.IQueueAlgorithm;
+import queue.OrderQueue;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.ArrayList;
 
 /**
- * A single merged controller that handles:
- * 1) Basic login fields (username/password).
- * 2) Main cafe logic: cart, items, queue, algorithm switching, etc.
+ * A merged controller that handles:
+ *  - Login fields (username/password) + potential "Register"
+ *  - Main cafe logic: cart, items, queue, algorithm switching, etc.
  */
 public class ClientUIController {
 
     // ----------------------------------------------------------------
-    //  LOGIN-RELATED FIELDS (if you want to use them)
+    //  LOGIN-RELATED FIELDS
     // ----------------------------------------------------------------
-    @FXML private TextField usernameField;
-    @FXML private TextField passwordField;
-    @FXML private Label responseLabel;
+    @FXML private TextField usernameField;      // If used by your login form
+    @FXML private TextField passwordField;      // If used by your login form
+    @FXML private Label responseLabel;          // For showing login status, etc.
 
-    // Example placeholders if you want "SaveUser"/"FindUser"
+    private final Gson gson = new Gson();
+
+    /**
+     * Example: handleLogin. If not needed, you can remove or adapt.
+     */
     @FXML
-    private void handleSaveUser() {
-        System.out.println("Saving user with username="
-                + (usernameField != null ? usernameField.getText() : "??"));
+    private void handleLogin() {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("action", "LOGIN");
+
+        Map<String, String> body = new HashMap<>();
+        body.put("username", usernameField.getText());
+        body.put("password", passwordField.getText());
+
+        String json = gson.toJson(new Request(headers, body));
+        String serverResponse = Client.sendJsonRequest(json);
+        System.out.println("Server response: " + serverResponse);
+
+        if (serverResponse.startsWith("ERROR:")) {
+            if (responseLabel != null) {
+                responseLabel.setText("Login failed: " + serverResponse);
+            }
+            return;
+        }
+
+        Response resp = gson.fromJson(serverResponse, Response.class);
+        if ("SUCCESS".equals(resp.getMessage())) {
+            if (responseLabel != null) {
+                responseLabel.setText("Login successful!");
+            }
+            // Close login window if desired
+            if (responseLabel != null) {
+                Stage stage = (Stage) responseLabel.getScene().getWindow();
+                stage.close();
+            }
+            // Show main cafe
+            MainApp.showMainCafe();
+        } else {
+            if (responseLabel != null) {
+                responseLabel.setText("Login failed: " + resp.getMessage());
+            }
+        }
     }
 
+    /**
+     * Example: handleRegister. If not needed, you can remove or adapt.
+     */
     @FXML
-    private void handleFindUser() {
-        System.out.println("Finding user with username="
-                + (usernameField != null ? usernameField.getText() : "??"));
+    private void handleRegister() {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("action", "REGISTER");
+
+        Map<String, String> body = new HashMap<>();
+        body.put("username", usernameField.getText());
+        body.put("password", passwordField.getText());
+
+        String json = gson.toJson(new Request(headers, body));
+        String serverResponse = Client.sendJsonRequest(json);
+        System.out.println("Server response: " + serverResponse);
+
+        if (serverResponse.startsWith("ERROR:")) {
+            if (responseLabel != null) {
+                responseLabel.setText("Registration failed: " + serverResponse);
+            }
+            return;
+        }
+
+        Response resp = gson.fromJson(serverResponse, Response.class);
+        if ("REGISTERED".equals(resp.getMessage())) {
+            if (responseLabel != null) {
+                responseLabel.setText("Registration successful!");
+            }
+        } else {
+            if (responseLabel != null) {
+                responseLabel.setText("Registration failed: " + resp.getMessage());
+            }
+        }
     }
 
     // ----------------------------------------------------------------
-    //  MAIN CAFE LOGIC
+    //  MAIN CAFE FIELDS
     // ----------------------------------------------------------------
     @FXML private Label currentAlgorithmLabel;
     @FXML private VBox menuBox;
     @FXML private ListView<String> cartView;
     @FXML private ListView<String> queueView;
     @FXML private ListView<String> processedOrdersView;
-    @FXML private CheckBox memberCheckBox; // "Member?" checkbox in FXML
+    @FXML private CheckBox memberCheckBox; // "Member?" in FXML
 
-    // Cart: itemName -> count
+    // Items in the cart: itemName -> quantity
     private final Map<String, Integer> cartMap = new HashMap<>();
 
-    // Lists for queue & processed orders in the UI
+    // Lists for the queue & processed
     private final ObservableList<String> queueList = FXCollections.observableArrayList();
     private final ObservableList<String> processedList = FXCollections.observableArrayList();
 
-    // Local map for item weights
+    // Local item weights map
     private final Map<String, Integer> itemWeights = new HashMap<>();
 
-    // The JAR-based queue + current algorithm
     private OrderQueue cafeQueue;
     private IQueueAlgorithm currentAlg;
 
@@ -77,18 +151,18 @@ public class ClientUIController {
     private boolean isDarkMode = false;
 
     // ----------------------------------------------------------------
-    //  FXML Initialization
+    //  FXML initialize()
     // ----------------------------------------------------------------
     @FXML
     public void initialize() {
-        // Default algorithm: TimeBased
+        // Default algorithm
         currentAlg = new TimeBasedAlgorithm();
         cafeQueue = new OrderQueue(currentAlg);
+
         if (currentAlgorithmLabel != null) {
             currentAlgorithmLabel.setText("Current Algorithm: Time Based");
         }
 
-        // Bind queue & processed lists to the UI
         if (queueView != null) {
             queueView.setItems(queueList);
         }
@@ -96,26 +170,25 @@ public class ClientUIController {
             processedOrdersView.setItems(processedList);
         }
 
-        // Example default item weights
+        // Default item weights
         itemWeights.put("Cappuccino", 2);
         itemWeights.put("Espresso",   1);
         itemWeights.put("Sandwich",   3);
 
-        // Optional: run after UI loads
         Platform.runLater(() -> {
             // e.g. applyDarkMode(false);
         });
     }
 
     // ----------------------------------------------------------------
-    //  ALGORITHM SWITCH
+    //  SWITCH ALGORITHM
     // ----------------------------------------------------------------
     public void updateAlgorithm(String algName) {
         IQueueAlgorithm newAlg;
         switch (algName) {
             case "Batch Item":
                 BatchItemAlgorithm bia = new BatchItemAlgorithm();
-                // Example defaults
+                // Example batch vs. individual
                 bia.setWeights(3, 1);
                 newAlg = bia;
                 break;
@@ -124,7 +197,7 @@ public class ClientUIController {
                 break;
             case "Item Weight":
                 ItemWeightAlgorithm iwa = new ItemWeightAlgorithm();
-                // Let the JAR see the same default item weights
+                // Also set default item weights for JAR logic
                 iwa.setItemWeight("Cappuccino", 2);
                 iwa.setItemWeight("Espresso",   1);
                 iwa.setItemWeight("Sandwich",   3);
@@ -147,7 +220,7 @@ public class ClientUIController {
     }
 
     // ----------------------------------------------------------------
-    //  CART PLUS / MINUS
+    //  PLUS / MINUS
     // ----------------------------------------------------------------
     @FXML
     private void handleItemPlus(ActionEvent event) {
@@ -176,22 +249,25 @@ public class ClientUIController {
     private void refreshCartView() {
         if (cartView == null) return;
         cartView.getItems().clear();
-        cartMap.forEach((name, qty) ->
-                cartView.getItems().add(name + " x" + qty)
-        );
+        for (Map.Entry<String, Integer> e : cartMap.entrySet()) {
+            cartView.getItems().add(e.getKey() + " x" + e.getValue());
+        }
     }
 
     // ----------------------------------------------------------------
     //  ADD / REMOVE items from the left menu
     // ----------------------------------------------------------------
     public void addItemToMenu(String name, int weight) {
+        if (menuBox == null) {
+            System.err.println("menuBox is null - can't add item UI");
+            return;
+        }
         if (itemWeights.containsKey(name)) {
             showInfo("Item already exists: " + name);
             return;
         }
         itemWeights.put(name, weight);
 
-        // We replicate the same "label line + button line" pattern
         Label lbl = new Label(name);
         lbl.setStyle("-fx-text-fill: #ecf0f1;");
 
@@ -207,14 +283,13 @@ public class ClientUIController {
 
         HBox buttonRow = new HBox(10, plusBtn, minusBtn);
 
-        if (menuBox == null) {
-            System.err.println("menuBox is null - can't add item UI");
-            return;
+        // Insert above "Member?" if possible
+        int insertIndex = findMemberCheckBoxIndex();
+        if (insertIndex < 0) {
+            insertIndex = menuBox.getChildren().size();
         }
-        int insertIndex = Math.max(0, menuBox.getChildren().size() - 3);
-        // Add label
+        // Insert the label, then the HBox
         menuBox.getChildren().add(insertIndex, lbl);
-        // Add the HBox
         menuBox.getChildren().add(insertIndex + 1, buttonRow);
 
         System.out.println("Added item: " + name + " weight=" + weight);
@@ -233,10 +308,10 @@ public class ClientUIController {
         for (int i = 0; i < children.size(); i++) {
             if (children.get(i) instanceof Label lbl) {
                 if (lbl.getText().equals(name)) {
-                    // remove label
+                    // remove the label
                     children.remove(i);
                     // remove next node if HBox
-                    if (i < children.size() && (children.get(i) instanceof HBox)) {
+                    if (i < children.size() && children.get(i) instanceof HBox) {
                         children.remove(i);
                     }
                     System.out.println("Removed item from menu: " + name);
@@ -245,6 +320,20 @@ public class ClientUIController {
             }
         }
         System.out.println("Item '" + name + "' not found in the menuBox UI.");
+    }
+
+    /**
+     * Find the index of the memberCheckBox in the menuBox children, or -1 if not found.
+     */
+    private int findMemberCheckBoxIndex() {
+        if (memberCheckBox == null || menuBox == null) return -1;
+        var children = menuBox.getChildren();
+        for (int i = 0; i < children.size(); i++) {
+            if (children.get(i) == memberCheckBox) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     // ----------------------------------------------------------------
@@ -295,7 +384,7 @@ public class ClientUIController {
     }
 
     // ----------------------------------------------------------------
-    //  BOTTOM ROW: THEME, TIME VALUES, TIME WEIGHTS, SELECT ALGORITHM
+    //  THEME / TIME VALUES / TIME WEIGHTS / SELECT ALGORITHM
     // ----------------------------------------------------------------
     @FXML
     private void handleToggleTheme() {
@@ -313,9 +402,9 @@ public class ClientUIController {
             }
 
             SetTimeValuesController ctrl = loader.getController();
-            // Now references "ClientUIController" not "MainCafeController"
             ctrl.setMainController(this);
 
+            // If currentAlg is TimeWeightedAlgorithm, show thresholds
             if (currentAlg instanceof TimeWeightedAlgorithm twa) {
                 ctrl.initValues(twa.getTimeThresholds());
             }
@@ -324,8 +413,8 @@ public class ClientUIController {
             dialog.setTitle("Set Time Values");
             dialog.setScene(scene);
             dialog.show();
-        } catch (IOException e) {
-            showError("Failed to open SetTimeValues.fxml\n" + e.getMessage());
+        } catch (IOException ex) {
+            showError("Failed to open SetTimeValues.fxml\n" + ex.getMessage());
         }
     }
 
@@ -349,8 +438,8 @@ public class ClientUIController {
             dialog.setTitle("Set Time Weights");
             dialog.setScene(scene);
             dialog.show();
-        } catch (IOException e) {
-            showError("Failed to open SetTimeWeights.fxml\n" + e.getMessage());
+        } catch (IOException ex) {
+            showError("Failed to open SetTimeWeights.fxml\n" + ex.getMessage());
         }
     }
 
@@ -370,13 +459,13 @@ public class ClientUIController {
             dialog.setTitle("Select Algorithm");
             dialog.setScene(scene);
             dialog.show();
-        } catch (IOException e) {
-            showError("Failed to open SelectAlg.fxml\n" + e.getMessage());
+        } catch (IOException ex) {
+            showError("Failed to open SelectAlg.fxml\n" + ex.getMessage());
         }
     }
 
     // ----------------------------------------------------------------
-    //  HANDLERS for "Add New Item", "Remove Item", "Change Item Weight"
+    //  OPENING ADD/REMOVE/CHANGE ITEM DIALOGS
     // ----------------------------------------------------------------
     @FXML
     private void handleOpenAddItem() {
@@ -395,7 +484,7 @@ public class ClientUIController {
             dialog.setScene(scene);
             dialog.show();
         } catch (IOException ex) {
-            System.err.println("Failed to load FXML: " + ex.getMessage());
+            System.err.println("Failed to load AddNewItem.fxml: " + ex.getMessage());
         }
     }
 
@@ -417,7 +506,7 @@ public class ClientUIController {
             dialog.setScene(scene);
             dialog.show();
         } catch (IOException ex) {
-            System.err.println("Failed to load FXML: " + ex.getMessage());
+            System.err.println("Failed to load RemoveItem.fxml: " + ex.getMessage());
         }
     }
 
@@ -439,7 +528,7 @@ public class ClientUIController {
             dialog.setScene(scene);
             dialog.show();
         } catch (IOException ex) {
-            System.err.println("Failed to load FXML: " + ex.getMessage());
+            System.err.println("Failed to load ChangeItemWeight.fxml: " + ex.getMessage());
         }
     }
 
@@ -455,7 +544,6 @@ public class ClientUIController {
             System.err.println("dark-mode.css not found!");
             return;
         }
-        // Avoid potential NPE warning:
         String darkPath = darkCss.toExternalForm();
 
         if (enable) {
@@ -483,12 +571,16 @@ public class ClientUIController {
         alert.showAndWait();
     }
 
-    // For other controllers to query the current algorithm
+    /**
+     * Expose the current algorithm for controllers like SetTimeValues/SetTimeWeights.
+     */
     public IQueueAlgorithm getCurrentAlgorithm() {
         return currentAlg;
     }
 
-    // For "ChangeItemWeightController"
+    /**
+     * For ChangeItemWeightController usage
+     */
     public int getWeightForItem(String item) {
         return itemWeights.getOrDefault(item, 1);
     }
