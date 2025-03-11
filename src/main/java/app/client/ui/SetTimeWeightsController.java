@@ -1,5 +1,6 @@
 package app.client.ui;
 
+import algorithm.TimeWeightedAlgorithm;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -7,7 +8,8 @@ import javafx.stage.Stage;
 
 /**
  * Controller for SetTimeWeights.fxml
- * Minimal placeholder for "time weights" (whatever your logic is).
+ * Lets the user see/edit the 3 "weights" used by TimeWeightedAlgorithm
+ * for low/mid/high priority levels.
  */
 public class SetTimeWeightsController {
 
@@ -17,19 +19,47 @@ public class SetTimeWeightsController {
     @FXML private Button okButton;
     @FXML private Button cancelButton;
 
-    private MainCafeController mainController;
+    // REPLACED: private MainCafeController mainController;
+    private ClientUIController mainController;
 
-    public void setMainController(MainCafeController mainController) {
-        this.mainController = mainController;
+    public void setMainController(ClientUIController mc) {
+        this.mainController = mc;
+    }
+
+    /**
+     * Called by ClientUIController to initialize the text fields
+     * with the current weights array: [low, mid, high].
+     */
+    public void initWeights(int[] weights) {
+        lowField.setText(String.valueOf(weights[0]));
+        midField.setText(String.valueOf(weights[1]));
+        highField.setText(String.valueOf(weights[2]));
     }
 
     @FXML
     private void handleOk() {
-        String lowVal = lowField.getText().trim();
-        String midVal = midField.getText().trim();
-        String highVal = highField.getText().trim();
-        System.out.println("SetTimeWeights: low=" + lowVal + ", mid=" + midVal + ", high=" + highVal);
-        // You could call mainController.setTimeWeights(...) if you had such a method
+        if (mainController == null) {
+            close();
+            return;
+        }
+        try {
+            int low  = Integer.parseInt(lowField.getText().trim());
+            int mid  = Integer.parseInt(midField.getText().trim());
+            int high = Integer.parseInt(highField.getText().trim());
+
+            // 1) Store them in the controller's "storedTimeWeights"
+            mainController.setStoredTimeWeights(low, mid, high);
+
+            // 2) If current algorithm is TWA, apply them
+            if (mainController.getCurrentAlgorithm() instanceof TimeWeightedAlgorithm twa) {
+                twa.setWeights(low, mid, high);
+                System.out.println("Updated TWA weights to: [" + low + ", " + mid + ", " + high + "]");
+            } else {
+                System.out.println("No TWA active, stored weights for later use.");
+            }
+        } catch (NumberFormatException e) {
+            System.err.println("Invalid time weights: " + e.getMessage());
+        }
         close();
     }
 
@@ -39,7 +69,7 @@ public class SetTimeWeightsController {
     }
 
     private void close() {
-        Stage stage = (Stage) lowField.getScene().getWindow();
-        stage.close();
+        Stage s = (Stage) lowField.getScene().getWindow();
+        s.close();
     }
 }

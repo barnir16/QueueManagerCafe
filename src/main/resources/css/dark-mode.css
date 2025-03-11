@@ -1,17 +1,34 @@
+/* Coffee-themed dark mode */
+
 .root {
-    -fx-background-color: #2c3e50;
+    /* A deep coffee-brown background */
+    -fx-background-color: #4E342E;
+    -fx-text-fill: #FAFAFA;  /* Very light text */
 }
 
 .label {
-    -fx-text-fill: #ecf0f1;
+    /* Ensure labels also get the light text */
+    -fx-text-fill: #FAFAFA;
 }
 
 .button {
-    -fx-background-radius: 5;
+    /* Slightly different brown so that buttons stand out */
+    -fx-background-color: #5D4037;
+    -fx-text-fill: #FAFAFA;
+    /* Optionally, a small border radius could look nice:
+       -fx-background-radius: 5; */
 }
 
-/* You can style textfields, combos, etc. as you like */
-.text-field {
-    -fx-background-color: #34495e;
-    -fx-text-fill: #ecf0f1;
+.list-view {
+    /* Match the main root but slightly different hover color if desired */
+    -fx-background-color: #5D4037;
+    -fx-control-inner-background: #5D4037;
+    -fx-cell-hover-color: #6D4C41;
+    -fx-text-fill: #FAFAFA;
+}
+
+.text-field, .password-field {
+    -fx-background-color: #6D4C41;
+    -fx-text-fill: #FAFAFA;
+    -fx-prompt-text-fill: #D7CCC8; /* lighter placeholder text */
 }

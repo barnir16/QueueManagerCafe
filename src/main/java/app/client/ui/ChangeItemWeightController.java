@@ -8,10 +8,6 @@ import javafx.stage.Stage;
 
 import java.util.List;
 
-/**
- * Controller for ChangeItemWeight.fxml
- * Shows a combo of existing items, user enters new weight, calls mainController.setWeightForItem(...)
- */
 public class ChangeItemWeightController {
 
     @FXML private ComboBox<String> itemCombo;
@@ -19,34 +15,40 @@ public class ChangeItemWeightController {
     @FXML private Button applyButton;
     @FXML private Button cancelButton;
 
-    private MainCafeController mainController;
+    // REPLACED: private MainCafeController mainController;
+    private ClientUIController mainController;
 
-    public void setMainController(MainCafeController mainController) {
-        this.mainController = mainController;
+    public void setMainController(ClientUIController mc) {
+        this.mainController = mc;
     }
 
-    /**
-     * Called by MainCafeController to populate the combo with current items.
-     */
     public void initItems(List<String> items) {
         itemCombo.getItems().setAll(items);
+
+        itemCombo.setOnAction(e -> {
+            String sel = itemCombo.getValue();
+            if (sel != null && mainController != null) {
+                int w = mainController.getWeightForItem(sel);
+                weightField.setText(String.valueOf(w));
+            }
+        });
     }
 
     @FXML
     private void handleApply() {
-        String selectedItem = itemCombo.getValue();
-        if (selectedItem == null || selectedItem.isEmpty()) {
+        String sel = itemCombo.getValue();
+        if (sel == null || sel.isEmpty()) {
             System.out.println("No item selected");
             return;
         }
         try {
-            int newWeight = Integer.parseInt(weightField.getText());
-            if (newWeight <= 0) {
+            int newW = Integer.parseInt(weightField.getText().trim());
+            if (newW <= 0) {
                 System.out.println("Weight must be > 0");
                 return;
             }
             if (mainController != null) {
-                mainController.setWeightForItem(selectedItem, newWeight);
+                mainController.setWeightForItem(sel, newW);
             }
             close();
         } catch (NumberFormatException ex) {
@@ -60,7 +62,7 @@ public class ChangeItemWeightController {
     }
 
     private void close() {
-        Stage stage = (Stage) itemCombo.getScene().getWindow();
-        stage.close();
+        Stage st = (Stage) itemCombo.getScene().getWindow();
+        st.close();
     }
 }

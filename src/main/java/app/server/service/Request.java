@@ -6,7 +6,7 @@ import java.util.Map;
  * Represents a generic JSON request from the client:
  * {
  *   "headers": { "action": "LOGIN" },
- *   "body":    { "username": "...", "password": "..." }
+ *   "body":    { "username": "...", "password": "..."}
  * }
  */
 public class Request {

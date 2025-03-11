@@ -1,30 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  A BorderPane with:
-    - top:    currentAlgorithmLabel
-    - left:   menuBox (Cappuccino/Espresso/Sandwich + big 3 buttons)
-    - center: vertical SplitPane with cartView, queueView, processedOrdersView
-    - bottom: row of place/process/clear/toggle/time/weights/algorithm
--->
-
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.geometry.Orientation?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="app.client.ui.MainCafeController"
+            fx:controller="app.client.ui.ClientUIController"
             prefWidth="1000" prefHeight="600"
             style="-fx-background-color: #ecf0f1;">
 
     <top>
         <Label fx:id="currentAlgorithmLabel"
-               text="Current Algorithm: Time Based Algorithm"
+               text="Current Algorithm: Time Based"
                style="-fx-font-size: 18; -fx-padding: 10; -fx-text-fill: #2c3e50;" />
     </top>
 
@@ -36,7 +28,7 @@
             <Label text="Main Menu"
                    style="-fx-font-size: 20px; -fx-text-fill: #ecf0f1;" />
 
-            <!-- Example item row: Cappuccino -->
+            <!-- Default item: Cappuccino -->
             <Label text="Cappuccino" style="-fx-text-fill: #ecf0f1;" />
             <HBox spacing="10">
                 <Button text="+" style="-fx-background-color: #27ae60; -fx-text-fill: white;"
@@ -49,7 +41,7 @@
                 </Button>
             </HBox>
 
-            <!-- Example item row: Espresso -->
+            <!-- Default item: Espresso -->
             <Label text="Espresso" style="-fx-text-fill: #ecf0f1;" />
             <HBox spacing="10">
                 <Button text="+" style="-fx-background-color: #27ae60; -fx-text-fill: white;"
@@ -62,7 +54,7 @@
                 </Button>
             </HBox>
 
-            <!-- Example item row: Sandwich -->
+            <!-- Default item: Sandwich -->
             <Label text="Sandwich" style="-fx-text-fill: #ecf0f1;" />
             <HBox spacing="10">
                 <Button text="+" style="-fx-background-color: #27ae60; -fx-text-fill: white;"
@@ -75,18 +67,18 @@
                 </Button>
             </HBox>
 
-            <!-- Big 3 Buttons -->
-            <Button text="Add New Item"
-                    style="-fx-background-color: #2980b9; -fx-text-fill: white;"
-                    onAction="#handleOpenAddItem" />
+            <!-- "Member?" checkbox -->
+            <CheckBox fx:id="memberCheckBox"
+                      text="Member?"
+                      style="-fx-text-fill: #ecf0f1;" />
 
-            <Button text="Remove Item"
-                    style="-fx-background-color: #e74c3c; -fx-text-fill: white;"
-                    onAction="#handleRemoveItem" />
+            <!-- Place/Process/Clear in left panel, default style -->
+            <VBox spacing="10">
+                <Button text="Place Order"      onAction="#handlePlaceOrder" />
+                <Button text="Process Order"    onAction="#handleProcessOrder" />
+                <Button text="Clear Processed"  onAction="#handleClearProcessed" />
+            </VBox>
 
-            <Button text="Change Item Weight"
-                    style="-fx-background-color: #f1c40f; -fx-text-fill: black;"
-                    onAction="#handleOpenChangeWeight" />
         </VBox>
     </left>
 
@@ -105,7 +97,7 @@
                     </placeholder>
                 </ListView>
 
-                  <ListView fx:id="processedOrdersView">
+                <ListView fx:id="processedOrdersView">
                     <placeholder>
                         <Label text="No processed orders yet" />
                     </placeholder>
@@ -116,13 +108,15 @@
 
     <bottom>
         <HBox spacing="10" style="-fx-padding: 10;">
-            <Button text="Place Order"            onAction="#handlePlaceOrder" />
-            <Button text="Process Order"          onAction="#handleProcessOrder" />
-            <Button text="Clear Processed"        onAction="#handleClearProcessed" />
-            <Button text="Toggle Theme"           onAction="#handleToggleTheme" />
-            <Button text="Set Time Values"        onAction="#handleTimeValues" />
-            <Button text="Set Time Weights"       onAction="#handleTimeWeights" />
-            <Button text="Switch Algorithm"       onAction="#handleSelectAlgorithm" />
+            <!-- The "big" item mgmt & config buttons, default styling -->
+            <Button text="Add New Item"         onAction="#handleOpenAddItem" />
+            <Button text="Remove Item"          onAction="#handleRemoveItem" />
+            <Button text="Change Item Weight"   onAction="#handleOpenChangeWeight" />
+
+            <Button text="Toggle Theme"         onAction="#handleToggleTheme" />
+            <Button text="Set Time Values"      onAction="#handleTimeValues" />
+            <Button text="Set Time Weights"     onAction="#handleTimeWeights" />
+            <Button text="Switch Algorithm"     onAction="#handleSelectAlgorithm" />
         </HBox>
     </bottom>
 </BorderPane>

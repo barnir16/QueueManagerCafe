@@ -3,12 +3,12 @@ package app.client.ui;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 
 /**
- * Controller for SelectAlg.fxml
- * Minimal placeholder for selecting an algorithm.
- * We call mainController.updateAlgorithm(...) to change the label.
+ * Lets the user pick one of four algorithms:
+ * Time Based, Batch Item, Member Priority, or Item Weight.
  */
 public class SelectAlgController {
 
@@ -19,34 +19,53 @@ public class SelectAlgController {
     @FXML private Button okButton;
     @FXML private Button cancelButton;
 
-    private MainCafeController mainController;
+    // REPLACED: private MainCafeController mainController;
+    private ClientUIController mainController;
 
-    public void setMainController(MainCafeController mainController) {
-        this.mainController = mainController;
+    public void setMainController(ClientUIController mc) {
+        this.mainController = mc;
+    }
+
+    @FXML
+    private void initialize() {
+        // Ensure only one radio is selected
+        ToggleGroup group = new ToggleGroup();
+        timeBasedRadio.setToggleGroup(group);
+        batchRadio.setToggleGroup(group);
+        memberPriorityRadio.setToggleGroup(group);
+        itemWeightRadio.setToggleGroup(group);
+
+        // Optionally set a default
+        timeBasedRadio.setSelected(true);
     }
 
     @FXML
     private void handleOk() {
-        // Check which radio is selected and update the label in MainCafeController
+        String chosenAlg = "Time Based"; // default
+
         if (timeBasedRadio.isSelected()) {
-            mainController.updateAlgorithm("Time Based");
+            chosenAlg = "Time Based";
         } else if (batchRadio.isSelected()) {
-            mainController.updateAlgorithm("Batch Item");
+            chosenAlg = "Batch Item";
         } else if (memberPriorityRadio.isSelected()) {
-            mainController.updateAlgorithm("Member Priority");
+            chosenAlg = "Member Priority";
         } else if (itemWeightRadio.isSelected()) {
-            mainController.updateAlgorithm("Item Weight");
+            chosenAlg = "Item Weight";
         }
-        close();
+
+        if (mainController != null) {
+            mainController.updateAlgorithm(chosenAlg);
+        }
+        closeDialog();
     }
 
     @FXML
     private void handleCancel() {
-        close();
+        closeDialog();
     }
 
-    private void close() {
-        Stage stage = (Stage) timeBasedRadio.getScene().getWindow();
-        stage.close();
+    private void closeDialog() {
+        Stage st = (Stage) timeBasedRadio.getScene().getWindow();
+        st.close();
     }
 }

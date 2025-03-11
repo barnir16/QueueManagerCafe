@@ -1,45 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="app.client.ui.SelectAlgController"
-            prefHeight="200.0" prefWidth="300.0"
+            prefWidth="250.0" prefHeight="180.0"
             style="-fx-background-color: #ecf0f1; -fx-padding: 10;">
    <children>
       <Label layoutX="10.0" layoutY="10.0"
-             text="Select Algorithm:"
-             style="-fx-font-size: 16px; -fx-font-weight: bold;" />
-
+             text="Select Algorithm:" />
       <RadioButton fx:id="timeBasedRadio"
-                   layoutX="10.0" layoutY="50.0"
-                   text="Time Based Algorithm"
-                   selected="true" />
-
+                   layoutX="10.0" layoutY="40.0"
+                   text="Time Based" selected="true" />
       <RadioButton fx:id="batchRadio"
-                   layoutX="10.0" layoutY="80.0"
-                   text="Batch Item Algorithm" />
-
+                   layoutX="10.0" layoutY="65.0"
+                   text="Batch Item" />
       <RadioButton fx:id="memberPriorityRadio"
-                   layoutX="10.0" layoutY="110.0"
-                   text="Member Priority Algorithm" />
-
+                   layoutX="10.0" layoutY="90.0"
+                   text="Member Priority" />
       <RadioButton fx:id="itemWeightRadio"
-                   layoutX="10.0" layoutY="140.0"
-                   text="Item Weight Algorithm" />
-
+                   layoutX="10.0" layoutY="115.0"
+                   text="Item Weight" />
       <Button fx:id="okButton"
-              layoutX="130.0" layoutY="160.0"
+              layoutX="60.0" layoutY="145.0"
               text="OK"
               onAction="#handleOk"
               style="-fx-background-color: #2980b9; -fx-text-fill: white;" />
-
       <Button fx:id="cancelButton"
-              layoutX="190.0" layoutY="160.0"
+              layoutX="120.0" layoutY="145.0"
               text="Cancel"
               onAction="#handleCancel"
-              style="-fx-background-color: #95a5a6; -fx-text-fill: white;" />
+              style="-fx-background-color: #e74c3c; -fx-text-fill: white;" />
    </children>
 </AnchorPane>

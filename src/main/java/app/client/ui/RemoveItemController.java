@@ -7,25 +7,19 @@ import javafx.stage.Stage;
 
 import java.util.List;
 
-/**
- * Controller for RemoveItem.fxml
- * Shows a ComboBox of existing items, user clicks "Remove" -> calls mainController.removeItemFromMenu(...)
- */
 public class RemoveItemController {
 
     @FXML private ComboBox<String> itemComboBox;
     @FXML private Button removeButton;
     @FXML private Button cancelButton;
 
-    private MainCafeController mainController;
+    // REPLACED: private MainCafeController mainController;
+    private ClientUIController mainController;
 
-    public void setMainController(MainCafeController mainController) {
-        this.mainController = mainController;
+    public void setMainController(ClientUIController mc) {
+        this.mainController = mc;
     }
 
-    /**
-     * Called by MainCafeController to populate the comboBox with current items.
-     */
     public void initComboBox(List<String> items) {
         itemComboBox.getItems().setAll(items);
     }
@@ -45,7 +39,7 @@ public class RemoveItemController {
     }
 
     private void close() {
-        Stage stage = (Stage) itemComboBox.getScene().getWindow();
-        stage.close();
+        Stage st = (Stage) itemComboBox.getScene().getWindow();
+        st.close();
     }
 }

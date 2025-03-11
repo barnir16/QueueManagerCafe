@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml/1"
@@ -11,22 +10,25 @@
 
     <children>
         <Label layoutX="10.0" layoutY="10.0"
-               text="Set Processing Time (seconds):"
+               text="Set Time Thresholds (minutes):"
                style="-fx-font-size: 14px;" />
 
-        <TextField fx:id="timeField"
+        <TextField fx:id="timeLowField"
                    layoutX="10.0" layoutY="40.0"
-                   promptText="Enter seconds"
-                   prefWidth="150.0" />
+                   promptText="Low threshold" />
+
+        <TextField fx:id="timeMidField"
+                   layoutX="10.0" layoutY="75.0"
+                   promptText="Mid threshold" />
 
         <Button fx:id="saveButton"
-                layoutX="10.0" layoutY="80.0"
+                layoutX="10.0" layoutY="110.0"
                 text="Save"
                 onAction="#handleSave"
                 style="-fx-background-color: #2980b9; -fx-text-fill: white;" />
 
         <Button fx:id="cancelButton"
-                layoutX="80.0" layoutY="80.0"
+                layoutX="80.0" layoutY="110.0"
                 text="Cancel"
                 onAction="#handleCancel"
                 style="-fx-background-color: #95a5a6; -fx-text-fill: white;" />
